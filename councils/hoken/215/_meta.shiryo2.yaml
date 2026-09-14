@@ -1,0 +1,152 @@
+# 社会保障審議会 医療保険部会 第215回 資料2「次期医療保険制度改革に向けて」スライド索引
+#
+# 配置先: councils/hoken/215/_meta.shiryo2.yaml
+# 生成元: 001748577.pdf (34ページ)
+#
+# 会議体・開催情報は同じディレクトリの _meta.yaml を参照すること。
+#
+# ID体系: hoken-215-shiryo2-p{PDFページ3桁}
+# 特徴:   この資料には統計図表がほとんどない。閣議決定・政党間合意・国会の附帯決議の
+#         ★本文抜粋を並べたものであり、事務局の解釈はほぼ入っていない。
+
+council: hoken
+meeting: 215
+
+document:
+  key: shiryo2
+  id: 資料2
+  title: 次期医療保険制度改革に向けて
+  issuer: 厚生労働省 保険局
+  pdf_pages: 34
+  content_slides: 33   # 表紙1を除く
+  agenda: 医療保険制度改革について
+
+chapters:
+  - { key: s2-front, title: 資料2 表紙, pdf_pages: [1, 1], slides: 0 }
+  - { key: s2-honebuto, title: 資料2 骨太の方針2026（抜粋）, pdf_pages: [2, 9], slides: 8 }
+  - { key: s2-koshi, title: 資料2 社会保障改革項目に関する具体的な骨子, pdf_pages: [10, 14], slides: 5 }
+  - { key: s2-seicho, title: 資料2 日本成長戦略（抜粋）, pdf_pages: [15, 20], slides: 6 }
+  - { key: s2-kisei, title: 資料2 規制改革実施計画・デジタル重点計画（抜粋）, pdf_pages: [21, 24], slides: 4 }
+  - { key: s2-ueno, title: 資料2 U.E.N.O. Plan, pdf_pages: [25, 26], slides: 2 }
+  - { key: s2-hosei, title: 資料2 令和8年法律第31号の検討規定と附帯決議, pdf_pages: [27, 34], slides: 8 }
+
+slides:
+  - { pdf_page: 1, printed_page: null, type: cover, chapter: s2-front,
+      title: 次期医療保険制度改革に向けて（表紙）, text_ok: false, number_verified: false }
+
+  - { pdf_page: 2, printed_page: null, type: 経緯整理, chapter: s2-honebuto,
+      title: 骨太の方針2026（抜粋①）第3章1. 「強い経済」の構築と財政の持続可能性の実現,
+      themes: [改革経緯, 医療費動向], text_ok: true, number_verified: false }
+  - { pdf_page: 3, printed_page: null, type: 経緯整理, chapter: s2-honebuto,
+      title: 骨太の方針2026（抜粋②）第3章2. 全世代型社会保障の構築（社会保障と税の一体改革）,
+      themes: [改革経緯, 世代間負担], text_ok: true, number_verified: false }
+  - { pdf_page: 4, printed_page: null, type: 経緯整理, chapter: s2-honebuto,
+      title: 骨太の方針2026（抜粋③）第3章2. 全世代型社会保障の構築（医療・介護等）,
+      themes: [改革経緯, 医療提供体制], text_ok: true, number_verified: false }
+  - { pdf_page: 5, printed_page: null, type: 経緯整理, chapter: s2-honebuto,
+      title: 骨太の方針2026（抜粋④）第3章2. 全世代型社会保障の構築（医療保険制度）,
+      themes: [改革経緯, 患者負担, 世代間負担], text_ok: true, number_verified: false }
+  - { pdf_page: 6, printed_page: null, type: 経緯整理, chapter: s2-honebuto,
+      title: 骨太の方針2026（抜粋⑤）第3章2. 全世代型社会保障の構築（創薬・先端医療）,
+      themes: [改革経緯, 薬剤費・薬価], text_ok: true, number_verified: false }
+  - { pdf_page: 7, printed_page: null, type: 経緯整理, chapter: s2-honebuto,
+      title: 骨太の方針2026（抜粋⑥）第3章2. 全世代型社会保障の構築（攻めの予防医療・疾病対策）,
+      themes: [改革経緯, 予防・健康づくり], text_ok: true, number_verified: false }
+  - { pdf_page: 8, printed_page: null, type: 経緯整理, chapter: s2-honebuto,
+      title: 骨太の方針2026（抜粋⑦）第4章2. 新たな予算編成の在り方と令和9年度の基本方針,
+      themes: [改革経緯, 医療費動向], text_ok: true, number_verified: false }
+  - { pdf_page: 9, printed_page: null, type: 経緯整理, chapter: s2-honebuto,
+      title: 骨太の方針2026（抜粋⑧）第1章2. 将来世代への責任を果たす持続可能な経済社会の構築,
+      themes: [改革経緯, 世代間負担], text_ok: true, number_verified: false }
+
+  - { pdf_page: 10, printed_page: null, type: 経緯整理, chapter: s2-koshi,
+      title: 社会保障改革項目に関する具体的な骨子（令和8年7月7日 署名）①,
+      themes: [改革経緯], text_ok: true, number_verified: false }
+  - { pdf_page: 11, printed_page: null, type: 経緯整理, chapter: s2-koshi,
+      title: 社会保障改革項目に関する具体的な骨子（令和8年7月7日 署名）②,
+      themes: [改革経緯], text_ok: true, number_verified: false }
+  - { pdf_page: 12, printed_page: null, type: 経緯整理, chapter: s2-koshi,
+      title: 社会保障改革項目に関する具体的な骨子（令和8年7月7日 署名）③,
+      themes: [改革経緯, 医療提供体制], text_ok: true, number_verified: false }
+  - { pdf_page: 13, printed_page: null, type: 経緯整理, chapter: s2-koshi,
+      title: 社会保障改革項目に関する具体的な骨子（令和8年7月7日 署名）④,
+      themes: [改革経緯, 診療報酬], text_ok: true, number_verified: false }
+  - { pdf_page: 14, printed_page: null, type: 経緯整理, chapter: s2-koshi,
+      title: 社会保障改革項目に関する具体的な骨子（令和8年7月7日 署名）⑤,
+      themes: [改革経緯], text_ok: true, number_verified: false }
+
+  - { pdf_page: 15, printed_page: null, type: 経緯整理, chapter: s2-seicho,
+      title: 日本成長戦略（抜粋①）デジタル・AI関連の官民投資ロードマップ,
+      themes: [医療DX], text_ok: true, number_verified: false }
+  - { pdf_page: 16, printed_page: null, type: 経緯整理, chapter: s2-seicho,
+      title: 日本成長戦略（抜粋②）合成生物学等の官民投資ロードマップ,
+      themes: [創薬], text_ok: true, number_verified: false }
+  - { pdf_page: 17, printed_page: null, type: 経緯整理, chapter: s2-seicho,
+      title: 日本成長戦略（抜粋③）創薬・医療機器等の官民投資ロードマップ,
+      themes: [創薬, 薬剤費・薬価], text_ok: true, number_verified: false }
+  - { pdf_page: 18, printed_page: null, type: 経緯整理, chapter: s2-seicho,
+      title: 日本成長戦略（抜粋④）ライフロングヘルスケア等,
+      themes: [予防・健康づくり], text_ok: true, number_verified: false }
+  - { pdf_page: 19, printed_page: null, type: 経緯整理, chapter: s2-seicho,
+      title: 日本成長戦略（抜粋⑤）労働市場改革,
+      themes: [人材確保, 物価・賃金], text_ok: true, number_verified: false }
+  - { pdf_page: 20, printed_page: null, type: 経緯整理, chapter: s2-seicho,
+      title: 日本成長戦略（抜粋⑥）賃上げ環境整備,
+      themes: [物価・賃金], text_ok: true, number_verified: false }
+
+  - { pdf_page: 21, printed_page: null, type: 経緯整理, chapter: s2-kisei,
+      title: 規制改革実施計画（抜粋）地域におけるオンライン診療の更なる推進,
+      themes: [医療DX, 受診行動], text_ok: true, number_verified: false }
+  - { pdf_page: 22, printed_page: null, type: 経緯整理, chapter: s2-kisei,
+      title: デジタル社会の実現に向けた重点計画（抜粋①）,
+      themes: [医療DX], text_ok: true, number_verified: false }
+  - { pdf_page: 23, printed_page: null, type: 経緯整理, chapter: s2-kisei,
+      title: デジタル社会の実現に向けた重点計画（抜粋②）,
+      themes: [医療DX], text_ok: true, number_verified: false }
+  - { pdf_page: 24, printed_page: null, type: 経緯整理, chapter: s2-kisei,
+      title: デジタル社会の実現に向けた重点計画（抜粋③）,
+      themes: [医療DX], text_ok: true, number_verified: false }
+
+  - { pdf_page: 25, printed_page: null, type: 制度概要, chapter: s2-ueno,
+      title: U.E.N.O. Plan 〜攻めの予防医療 厚生労働省関係施策〜 概要（1）,
+      themes: [予防・健康づくり], text_ok: true, number_verified: false }
+  - { pdf_page: 26, printed_page: null, type: 制度概要, chapter: s2-ueno,
+      title: U.E.N.O. Plan 〜攻めの予防医療 厚生労働省関係施策〜 概要（2）,
+      themes: [予防・健康づくり], text_ok: true, number_verified: false }
+
+  - { pdf_page: 27, printed_page: null, type: 経緯整理, chapter: s2-hosei,
+      title: 健康保険法等の一部を改正する法律（令和8年法律第31号）の検討規定,
+      themes: [改革経緯], text_ok: true, number_verified: false }
+  - { pdf_page: 28, printed_page: null, type: 経緯整理, chapter: s2-hosei,
+      title: 附帯決議について①（衆議院厚生労働委員会 令和8年4月24日）,
+      themes: [改革経緯], text_ok: true, number_verified: false }
+  - { pdf_page: 29, printed_page: null, type: 経緯整理, chapter: s2-hosei,
+      title: 附帯決議について②（衆議院厚生労働委員会）,
+      themes: [改革経緯], text_ok: true, number_verified: false }
+  - { pdf_page: 30, printed_page: null, type: 経緯整理, chapter: s2-hosei,
+      title: 附帯決議について③（衆議院厚生労働委員会）,
+      themes: [改革経緯, 金融所得], text_ok: true, number_verified: false }
+  - { pdf_page: 31, printed_page: null, type: 経緯整理, chapter: s2-hosei,
+      title: 附帯決議について①（参議院厚生労働委員会 令和8年5月28日）,
+      themes: [改革経緯], text_ok: true, number_verified: false }
+  - { pdf_page: 32, printed_page: null, type: 経緯整理, chapter: s2-hosei,
+      title: 附帯決議について②（参議院厚生労働委員会）,
+      themes: [改革経緯], text_ok: true, number_verified: false }
+  - { pdf_page: 33, printed_page: null, type: 経緯整理, chapter: s2-hosei,
+      title: 附帯決議について③（参議院厚生労働委員会）,
+      themes: [改革経緯, 患者負担], text_ok: true, number_verified: false }
+  - { pdf_page: 34, printed_page: null, type: 経緯整理, chapter: s2-hosei,
+      title: 附帯決議について④（参議院厚生労働委員会）,
+      themes: [改革経緯, 保険者財政], text_ok: true, number_verified: false }
+
+notes:
+  text_not_extractable:
+    description: pdftotext がほぼ空を返すのは表紙のみ。本文はすべてテキスト層がある
+    pdf_pages: [1]
+    rule: "解説生成時は全数値に【要確認】を付し、number_verified: false を維持する"
+  character:
+    description: |
+      この資料は図表をほとんど含まない。閣議決定（骨太2026・日本成長戦略・規制改革実施計画・
+      デジタル重点計画）、政党間合意（骨子）、法律の検討規定、国会の附帯決議の
+      本文抜粋を並べたものである。事務局の解釈はほぼ入っていない。
+      抜粋の範囲の選び方そのものが、事務局が何を論点と見ているかを示す【解釈】。

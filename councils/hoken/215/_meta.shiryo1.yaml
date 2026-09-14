@@ -1,0 +1,280 @@
+# 社会保障審議会 医療保険部会 第215回 資料1「OTC類似薬の保険給付の見直しの実施について」スライド索引
+#
+# 配置先: councils/hoken/215/_meta.shiryo1.yaml
+# 生成元: 001748716.pdf (25ページ)
+#
+# 会議体・開催情報は同じディレクトリの _meta.yaml を参照すること。
+# このファイルは document / chapters / slides / notes だけを持つ。
+#
+# ID体系: hoken-215-shiryo1-p{PDFページ3桁}
+# 注意:   このPDFにはスライド番号の印刷がないページが多い。printed_page は null を基本とする。
+
+council: hoken
+meeting: 215
+
+document:
+  key: shiryo1
+  id: 資料1
+  title: OTC類似薬の保険給付の見直しの実施について
+  issuer: 厚生労働省 保険局
+  pdf_pages: 25
+  content_slides: 20   # 表紙1 + 目次1 + 中扉3 を除く
+  agenda: OTC類似薬の保険給付の見直しの実施について
+
+chapters:
+  - { key: s1-front, title: 資料1 表紙・目次, pdf_pages: [1, 2], slides: 0 }
+  - { key: s1-iken,  title: 資料1 ① 前回の医療保険部会における主なご意見, pdf_pages: [3, 5], slides: 3 }
+  - { key: s1-ronten, title: 資料1 ② 実施に向けた論点について, pdf_pages: [6, 14], slides: 8 }
+  - { key: s1-enkatsu, title: 資料1 ③ 制度の円滑な実施について, pdf_pages: [15, 18], slides: 3 }
+  - { key: s1-sanko, title: 資料1 参考資料, pdf_pages: [19, 25], slides: 6 }
+
+slides:
+  - pdf_page: 1
+    printed_page: null
+    type: cover
+    title: OTC類似薬の保険給付の見直しの実施について（表紙）
+    chapter: s1-front
+    text_ok: false
+    number_verified: false
+
+  - pdf_page: 2
+    printed_page: null
+    type: toc
+    title: 目次
+    chapter: s1-front
+    text_ok: false
+    number_verified: false
+
+  - pdf_page: 3
+    printed_page: null
+    type: 論点提示
+    title: 患者団体ヒアリング（令和8年9月3日実施）における主な意見
+    chapter: s1-iken
+    themes: [OTC類似薬, 患者負担]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 4
+    printed_page: null
+    type: 論点提示
+    title: 医療保険部会（令和8年9月3日開催）における主なご意見①
+    chapter: s1-iken
+    themes: [OTC類似薬]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 5
+    printed_page: null
+    type: 論点提示
+    title: 医療保険部会（令和8年9月3日開催）における主なご意見②
+    chapter: s1-iken
+    themes: [OTC類似薬]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 6
+    printed_page: null
+    type: chapter
+    title: 実施に向けた論点について（中扉）
+    chapter: s1-ronten
+    text_ok: false
+    number_verified: false
+
+  - pdf_page: 7
+    printed_page: null
+    type: 論点提示
+    title: 実施に向けた論点について（第213回 資料1 再掲）
+    chapter: s1-ronten
+    themes: [OTC類似薬]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 8
+    printed_page: null
+    type: 対応案
+    title: 論点① 長期使用等が医療上必要である場合の具体的な取扱い
+    chapter: s1-ronten
+    themes: [OTC類似薬, 患者負担]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 9
+    printed_page: null
+    type: 対応案
+    title: 論点② ステロイド外用薬のプロアクティブ療法の整理について
+    chapter: s1-ronten
+    themes: [OTC類似薬]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 10
+    printed_page: null
+    type: 制度概要
+    title: （参考）ステロイド外用薬のプロアクティブ療法
+    chapter: s1-ronten
+    themes: [OTC類似薬]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 11
+    printed_page: null
+    type: 制度概要
+    title: （参考）アトピー性皮膚炎診療ガイドライン
+    chapter: s1-ronten
+    themes: [OTC類似薬]
+    third_party_figure: true
+    text_ok: false
+    number_verified: false
+
+  - pdf_page: 12
+    printed_page: null
+    type: 現状データ
+    title: （参考）患者調査（Murota H, et al. Dermatol Ther(Heidelb), 2026）
+    chapter: s1-ronten
+    themes: [OTC類似薬]
+    third_party_figure: true
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 13
+    printed_page: null
+    type: 対応案
+    title: 論点③ 指定難病患者等を客観的に確認できる方法
+    chapter: s1-ronten
+    themes: [OTC類似薬, 患者負担]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 14
+    printed_page: 13
+    type: 制度概要
+    title: （参考）指定難病の医療費助成制度（令和5年度 全国厚生労働関係部局長会議説明資料）
+    chapter: s1-ronten
+    themes: [OTC類似薬]
+    origin: 令和5年度 全国厚生労働関係部局長会議説明資料 13ページ
+    text_ok: false
+    number_verified: false
+
+  - pdf_page: 15
+    printed_page: null
+    type: chapter
+    title: 制度の円滑な実施について（中扉）
+    chapter: s1-enkatsu
+    text_ok: false
+    number_verified: false
+
+  - pdf_page: 16
+    printed_page: null
+    type: 対応案
+    title: 医療現場における円滑な制度運用に向けた対応（案）①
+    chapter: s1-enkatsu
+    themes: [OTC類似薬, 医療DX]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 17
+    printed_page: null
+    type: 対応案
+    title: 医療現場における円滑な制度運用に向けた対応（案）②
+    chapter: s1-enkatsu
+    themes: [OTC類似薬]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 18
+    printed_page: null
+    type: 制度概要
+    title: 「別途の負担を求めない者」と「求めない療養」の範囲について（令和8年7月8日 資料1）
+    chapter: s1-enkatsu
+    themes: [OTC類似薬, 患者負担]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    origin: 令和8年7月8日 第212回 社会保障審議会医療保険部会 資料1
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 19
+    printed_page: null
+    type: chapter
+    title: 参考資料（中扉）
+    chapter: s1-sanko
+    text_ok: false
+    number_verified: false
+
+  - pdf_page: 20
+    printed_page: null
+    type: 論点提示
+    title: 患者団体ヒアリング（令和8年8月27日実施）における主な意見
+    chapter: s1-sanko
+    themes: [OTC類似薬]
+    origin: 令和8年9月3日 第214回 社会保障審議会医療保険部会 資料2
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 21
+    printed_page: null
+    type: 論点提示
+    title: 医療保険部会（令和8年8月27日開催）における主なご意見①
+    chapter: s1-sanko
+    themes: [OTC類似薬]
+    origin: 令和8年9月3日 第214回 社会保障審議会医療保険部会 資料2
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 22
+    printed_page: null
+    type: 論点提示
+    title: 医療保険部会（令和8年8月27日開催）における主なご意見②
+    chapter: s1-sanko
+    themes: [OTC類似薬]
+    origin: 令和8年9月3日 第214回 社会保障審議会医療保険部会 資料2
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 23
+    printed_page: null
+    type: 論点提示
+    title: 中医協総会（令和8年8月26日開催）における主なご意見
+    chapter: s1-sanko
+    themes: [OTC類似薬]
+    origin: 中央社会保険医療協議会 総－2（令和8年9月9日）
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 24
+    printed_page: null
+    type: 制度概要
+    title: OTC類似薬の一部保険外療養の実務フロー（院外処方の場合）
+    chapter: s1-sanko
+    themes: [OTC類似薬, 医療DX]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+  - pdf_page: 25
+    printed_page: null
+    type: 制度概要
+    title: 別途の負担の対象となる医療用医薬品の成分一覧（77成分）
+    chapter: s1-sanko
+    themes: [OTC類似薬, 薬剤費・薬価]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+    number_verified: false
+
+notes:
+  text_not_extractable:
+    description: pdftotext がほぼ空を返すページ。表紙・目次・中扉と、画像で貼られた参考資料
+    pdf_pages: [1, 2, 6, 11, 14, 15, 19]
+    rule: "解説生成時は全数値に【要確認】を付し、number_verified: false を維持する"
+  third_party_figures:
+    description: 厚労省が作図したものではなく、他所の図がそのまま貼られているページ
+    pdf_pages: [11, 12]
+    rule: "third_party_figure: true。ビューアでは画像を表示せず出典リンクに差し替える"

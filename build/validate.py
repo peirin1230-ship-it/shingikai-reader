@@ -121,7 +121,7 @@ def body_numbers(body: str) -> set[str]:
 
 
 def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[str],
-                pages_json: dict, rep: Report) -> None:
+                pages_json: dict, rep: Report, doc_key: str = "sanko") -> None:
     where = str(path.relative_to(ROOT))
     fm, body = split_frontmatter(path.read_text(encoding="utf-8"))
     if fm is None:
@@ -143,7 +143,7 @@ def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[
         if not isinstance(fm.get(key), bool):
             rep.error(where, f"{key} は true/false で書くこと: {fm.get(key)!r}")
 
-    expected_id = f"{fm.get('council')}-{fm.get('meeting')}-sanko-p{fm.get('pdf_page'):03d}" \
+    expected_id = f"{fm.get('council')}-{fm.get('meeting')}-{doc_key}-p{fm.get('pdf_page'):03d}" \
         if isinstance(fm.get("pdf_page"), int) else None
     if expected_id and fm.get("id") != expected_id:
         rep.warn(where, f"id が命名規則と違う: {fm.get('id')} （想定 {expected_id}）")
@@ -195,7 +195,7 @@ def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[
     elif page_rec is None:
         rep.warn(where, "抽出テキストがない（build/extract.py を先に走らせる）")
     else:
-        txt = WORK / fm["council"] / str(fm["meeting"]) / "sanko" / f"p{fm['pdf_page']:03d}.txt"
+        txt = WORK / fm["council"] / str(fm["meeting"]) / doc_key / f"p{fm['pdf_page']:03d}.txt"
         if txt.exists():
             source_nums = numbers_in(txt.read_text(encoding="utf-8", errors="replace"))
             unknown = sorted(body_numbers(body) - source_nums,
@@ -322,16 +322,30 @@ def main(argv: list[str] | None = None) -> int:
     pattern = f"{args.council or '*'}/{args.meeting or '*'}/_meta.yaml"
     for meta_path in sorted(COUNCILS.glob(pattern)):
         meta = load_yaml(meta_path)
-        meta_by_page = {s["pdf_page"]: s for s in meta.get("slides", [])}
         council, meeting = meta["council"], str(meta["meeting"])
 
-        pages_json: dict = {}
-        pj = WORK / council / meeting / "sanko" / "pages.json"
-        if pj.exists():
-            pages_json = {p["pdf_page"]: p for p in json.loads(pj.read_text(encoding="utf-8"))["pages"]}
+        # _meta.yaml が主資料、_meta.{key}.yaml が同じ回の別資料の索引
+        indexes: dict[str, dict] = {}
+        for mp in [meta_path] + sorted(meta_path.parent.glob("_meta.*.yaml")):
+            m = load_yaml(mp) or {}
+            key = (m.get("document") or {}).get("key")
+            if not key:
+                rep.error(str(mp.relative_to(ROOT)), "document.key がない")
+                continue
+            indexes[key] = {s["pdf_page"]: s for s in m.get("slides", [])}
 
         for slide_path in sorted(meta_path.parent.glob("*/p*.md")):
-            check_slide(slide_path, meta_by_page, topics, glossary, pages_json, rep)
+            doc_key = slide_path.parent.name
+            if doc_key not in indexes:
+                rep.error(str(slide_path.relative_to(ROOT)),
+                          f"資料 {doc_key} の索引（_meta.{doc_key}.yaml）がない")
+                continue
+            pages_json: dict = {}
+            pj = WORK / council / meeting / doc_key / "pages.json"
+            if pj.exists():
+                pages_json = {p["pdf_page"]: p
+                              for p in json.loads(pj.read_text(encoding="utf-8"))["pages"]}
+            check_slide(slide_path, indexes[doc_key], topics, glossary, pages_json, rep, doc_key)
 
     if args.check_urls:
         print("URLの死活:")

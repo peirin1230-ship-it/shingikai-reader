@@ -90,6 +90,16 @@ def collect(include_third_party: bool) -> dict:
         meta = load_yaml(meta_path)
         council, meeting = meta["council"], str(meta["meeting"])
         doc = meta.get("document", {})
+
+        # _meta.yaml が主資料、_meta.{key}.yaml が同じ回の別資料
+        metas = [meta] + [load_yaml(mp) or {}
+                          for mp in sorted(meta_path.parent.glob("_meta.*.yaml"))]
+        docs = []
+        for m in metas:
+            d = m.get("document", {})
+            docs.append({"key": d.get("key"), "id": d.get("id"), "title": d.get("title"),
+                         "pdf_pages": d.get("pdf_pages"),
+                         "content_slides": d.get("content_slides")})
         meetings.append({
             "council": council, "meeting": meeting,
             "council_name": councils.get(council, {}).get("name", council),
@@ -100,51 +110,58 @@ def collect(include_third_party: bool) -> dict:
             "document_id": doc.get("id"),
             "pdf_pages": doc.get("pdf_pages"),
             "content_slides": doc.get("content_slides"),
-            "chapters": meta.get("chapters", []),
+            "documents": docs,
+            "chapters": [c for m in metas for c in m.get("chapters", [])],
             "materials_url": meta.get("materials_url"),
             "minutes": meta.get("minutes", {}),
         })
-        chapter_title = {c["key"]: c["title"] for c in meta.get("chapters", [])}
-        doc_key = doc.get("key", "sanko")
 
-        written = {}
-        for md_path in sorted(meta_path.parent.glob("*/p*.md")):
-            fm, body = split_frontmatter(md_path.read_text(encoding="utf-8"))
-            if fm.get("pdf_page"):
-                written[fm["pdf_page"]] = (fm, body)
+        for m in metas:
+            d = m.get("document", {})
+            doc_key = d.get("key", "sanko")
+            chapter_title = {c["key"]: c["title"] for c in m.get("chapters", [])}
 
-        for s in meta.get("slides", []):
-            page = s["pdf_page"]
-            sid = f"{council}-{meeting}-{doc_key}-p{page:03d}"
-            fm, body = written.get(page, ({}, ""))
-            third = bool(fm.get("third_party_figure", s.get("third_party_figure", False)))
-            slides.append({
-                "id": sid,
-                "council": council, "council_name": councils.get(council, {}).get("name", council),
-                "meeting": meeting, "document": doc.get("id"),
-                "pdf_page": page, "printed_page": s.get("printed_page"),
-                "title": s.get("title"),
-                "chapter_key": s.get("chapter"),
-                "chapter": chapter_title.get(s.get("chapter"), s.get("chapter")),
-                "slide_type": s.get("type"),
-                "themes": fm.get("themes") or s.get("themes") or [],
-                "terms": fm.get("terms") or s.get("terms") or [],
-                "supports_topics": fm.get("supports_topics") or s.get("supports_topics") or [],
-                "origin": fm.get("origin") or s.get("origin"),
-                "data_source": fm.get("data_source") or s.get("data_source"),
-                "note": s.get("note"),
-                "text_extractable": bool(s.get("text_ok", True)),
-                "third_party_figure": third,
-                "has_commentary": bool(body.strip()),
-                "confidence": fm.get("confidence"),
-                "review_status": fm.get("review_status", "none"),
-                "number_verified": bool(fm.get("number_verified", False)),
-                "image": (f"images/{council}/{meeting}/{doc_key}/p{page:03d}.webp"
-                          if (not third or include_third_party) else None),
-                "thumb": (f"images/{council}/{meeting}/{doc_key}/p{page:03d}.thumb.webp"
-                          if (not third or include_third_party) else None),
-                "body_md": body,
-            })
+            written = {}
+            for md_path in sorted((meta_path.parent / doc_key).glob("p*.md")):
+                fm, body = split_frontmatter(md_path.read_text(encoding="utf-8"))
+                if fm.get("pdf_page"):
+                    written[fm["pdf_page"]] = (fm, body)
+
+            for s in m.get("slides", []):
+                page = s["pdf_page"]
+                sid = f"{council}-{meeting}-{doc_key}-p{page:03d}"
+                fm, body = written.get(page, ({}, ""))
+                third = bool(fm.get("third_party_figure", s.get("third_party_figure", False)))
+                slides.append({
+                    "id": sid,
+                    "council": council,
+                    "council_name": councils.get(council, {}).get("name", council),
+                    "meeting": meeting, "document": d.get("id"),
+                    "document_key": doc_key, "document_pages": d.get("pdf_pages"),
+                    "pdf_page": page, "printed_page": s.get("printed_page"),
+                    "title": s.get("title"),
+                    "chapter_key": s.get("chapter"),
+                    "chapter": chapter_title.get(s.get("chapter"), s.get("chapter")),
+                    "slide_type": s.get("type"),
+                    "themes": fm.get("themes") or s.get("themes") or [],
+                    "terms": fm.get("terms") or s.get("terms") or [],
+                    "supports_topics": (fm.get("supports_topics")
+                                        or s.get("supports_topics") or []),
+                    "origin": fm.get("origin") or s.get("origin"),
+                    "data_source": fm.get("data_source") or s.get("data_source"),
+                    "note": s.get("note"),
+                    "text_extractable": bool(s.get("text_ok", True)),
+                    "third_party_figure": third,
+                    "has_commentary": bool(body.strip()),
+                    "confidence": fm.get("confidence"),
+                    "review_status": fm.get("review_status", "none"),
+                    "number_verified": bool(fm.get("number_verified", False)),
+                    "image": (f"images/{council}/{meeting}/{doc_key}/p{page:03d}.webp"
+                              if (not third or include_third_party) else None),
+                    "thumb": (f"images/{council}/{meeting}/{doc_key}/p{page:03d}.thumb.webp"
+                              if (not third or include_third_party) else None),
+                    "body_md": body,
+                })
 
     # ---- evidence_slides の逆生成 ----
     by_topic: dict[str, list[str]] = {}

@@ -176,7 +176,7 @@ function renderList(){
 function slideView(s){
   const meeting = DATA.meetings.find(m => m.council === s.council && m.meeting === s.meeting) || {};
   let h = `<div class="slidehead">
-      <span class="page">p${String(s.pdf_page).padStart(3,"0")} / ${meeting.pdf_pages ?? "?"}
+      <span class="page">p${String(s.pdf_page).padStart(3,"0")} / ${s.document_pages ?? meeting.pdf_pages ?? "?"}
       ${s.printed_page != null ? `・スライド${s.printed_page}` : ""}</span>
       <h2>${esc(s.title)}</h2></div>
     <div class="status">${esc(s.council_name)} 第${esc(s.meeting)}回 ${esc(s.document ?? "")}
@@ -273,9 +273,17 @@ function aboutView(){
       <h3>${esc(m.council_name)} 第${esc(m.meeting)}回</h3>
       <p class="status">${esc(m.date)}／${esc(m.venue ?? "")}</p>
       <p><strong>議題</strong></p><ul>${(m.agendas || []).map(a => `<li>${esc(a)}</li>`).join("")}</ul>
-      <p><strong>資料</strong> ${esc(m.document_id ?? "")}「${esc(m.document ?? "")}」
-        全${esc(m.pdf_pages)}ページ（実質${esc(m.content_slides)}スライド）</p>
-      <p><strong>解説の進捗</strong> ${written} / ${content} 枚</p>
+      <p><strong>資料</strong></p>
+      <ul>${(m.documents || [{id:m.document_id, title:m.document, pdf_pages:m.pdf_pages,
+                              content_slides:m.content_slides, key:"sanko"}]).map(d => {
+        const n = DATA.slides.filter(s => s.document_key === d.key
+                                       || (!s.document_key && d.key === "sanko"));
+        const w = n.filter(s => s.has_commentary).length;
+        return `<li>${esc(d.id ?? "")}「${esc(d.title ?? "")}」 全${esc(d.pdf_pages)}ページ`
+             + `${d.content_slides != null ? `（実質${esc(d.content_slides)}スライド）` : ""}`
+             + ` — 解説 ${w} / ${n.length} 枚</li>`;
+      }).join("")}</ul>
+      <p><strong>解説の進捗（合計）</strong> ${written} / ${content} 枚</p>
       <p><strong>議事録</strong> ${m.minutes?.published ? `<a href="${m.minutes.url}">公開済み</a>`
         : "未公開。委員の発言は記載していない"}</p>
       ${m.materials_url ? `<p><a href="${m.materials_url}">厚生労働省の資料一覧ページ</a></p>` : ""}
