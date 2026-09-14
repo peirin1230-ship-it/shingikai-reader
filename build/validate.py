@@ -231,6 +231,28 @@ def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[
             continue
         rep.error(where, f"リンク先がない: {link}")
 
+    # ---- 5b. リンクのラベルが指す先のタイトルと合っているか ----
+    # 「[参考資料 p081 保険者の予防・健康づくりの取組](../sanko/p081.md)」のように、
+    # ページ番号を取り違えるとリンクは通るのにラベルが別のスライドを指す。
+    # ラベルと索引上のタイトルの文字の重なりが薄いときだけ警告する（略称は許す）。
+    for label, doc, pg in re.findall(
+            r"\[([^\]]{2,80}?)\]\((?:\.\./([\w\-]+)/)?p(\d{3})\.md\)", body):
+        idx = (indexes or {}).get(doc or doc_key) or (meta_by_page if doc is None else None)
+        rec = (idx or {}).get(int(pg))
+        if not rec:
+            continue
+        real = str(rec.get("title") or "")
+        lab = re.sub(r"^(参考資料|資料\d)?\s*p\d{3}\s*", "", label).strip()
+        # ラベルが資料そのものの呼び名（「資料1」「参考資料」）のときは表紙を指すので照合しない
+        if not lab or not real or lab in {"参考資料", "資料1", "資料2", "議事次第", "委員名簿"}:
+            continue
+        if lab in real or real in lab:
+            continue
+        common = len(set(lab) & set(real))
+        if common / max(len(set(lab)), 1) < 0.34:
+            rep.warn(where, f"リンクのラベルが索引のタイトルと合わない: "
+                            f"p{pg} 「{lab}」 vs 「{real}」")
+
 
 def check_kb(rep: Report) -> tuple[set[str], set[str]]:
     topics_path = KB / "topics.yaml"
