@@ -6,7 +6,7 @@
 
 最初の対象は **社会保障審議会 医療保険部会 第215回（令和8年9月11日）** の3資料
 （参考資料「基礎資料」83ページ / 資料1 25ページ / 資料2 34ページ = **全142ページ**）。
-**142ページすべてに解説がある。**
+**142ページすべてに解説がある。** 議事次第（1ページ）を加えて **143枚**。
 
 仕様は [`docs/SPEC.md`](docs/SPEC.md)（v0.3）にある。
 
@@ -111,7 +111,9 @@ python3 build/inspect.py --council hoken --meeting 215 --page 77 --grid
 | v1.0 | GitHub Pages公開 | ✅ https://peirin1230-ship-it.github.io/shingikai-reader/ |
 | v1.1 | 資料1「OTC類似薬の保険給付の見直しの実施について」 | ✅ **25/25枚** |
 | v1.2 | 資料2「次期医療保険制度改革に向けて」 | ✅ **34/34枚** |
-| v1.3 | 数値照合（`number_verified: true` にする） | 🚧 142枚すべて `false` のまま |
+| v1.2 | 議事次第 | ✅ 1/1枚 |
+| v1.3 | 参照文書の取得 | ✅ **kb/documents.yaml の11件すべて原典を取得済み** |
+| v1.4 | 数値照合（`number_verified: true` にする） | 🚧 143枚すべて `false` のまま |
 
 **第215回の3資料142ページすべてに解説がある。**
 `make validate` はエラー0で通る。ただし**全スライドが `number_verified: false`** であり、
@@ -122,12 +124,31 @@ python3 build/inspect.py --council hoken --meeting 215 --page 77 --grid
 | 参考資料 基礎資料 | 83 | ✅ 83/83 | `work/hoken/215/sanko/` |
 | 資料1 OTC類似薬の保険給付の見直しの実施について | 25 | ✅ 25/25 | `work/hoken/215/shiryo1/` |
 | 資料2 次期医療保険制度改革に向けて | 34 | ✅ 34/34 | `work/hoken/215/shiryo2/` |
-| 議事次第 | 1 | — | `work/hoken/215/shidai/` |
-| 委員名簿 | 2 | — | `work/hoken/215/meibo/` |
+| 議事次第 | 1 | ✅ 1/1 | `work/hoken/215/shidai/` |
+| 委員名簿 | 2 | — ※ | `work/hoken/215/meibo/` |
 | 全体版 | 145 | — | 上記5点の連結なのでコミットしない |
+
+※ **委員名簿の解説は作成しない。** 実在する個人の氏名・所属の一覧であり、
+注釈して公開する意味が乏しいためである。抽出テキストは追跡している。
+また本リポジトリは、**議事録が公開されるまで委員の発言を記載しない**（SPEC §6）。
+第215回の議事録は未公開である。
 
 全体版PDFは他5資料をそのまま連結したもので、抽出テキストが**ページ単位でバイト一致する**
 ことを確認した。重複するのでコミット対象から外してある（`.gitignore`）。抽出自体は行われる。
+
+### 参照している文書
+
+解説が参照する上位の文書（閣議決定・政党間合意・法律）は
+[`kb/documents.yaml`](kb/documents.yaml) に、URLとSHA256つきで登録している。
+**11件すべて原典を取得済みである。**
+
+最後まで残っていた「**医療法に関する三党合意書**」（令和7年6月6日）は、
+政党の公式サイトに掲載が確認できず、二次情報だけを記録していた。
+公益社団法人 全日本病院協会が掲載している版を取得し、
+SHA256とともに登録した（`santo-goi-2025-06-06`）。
+政党の公式配布元ではないため、公式版との同一性は未確認である【要確認】。
+PDFはスキャンでテキスト層がなく、本文はスキャン画像を目視で読んだ。
+OCR（tesseract）は縦書き・手書き署名の混在で精度が出ず、使えなかった。
 
 ### 複数資料の扱い
 
@@ -137,7 +158,8 @@ python3 build/inspect.py --council hoken --meeting 215 --page 77 --grid
 councils/hoken/215/_meta.yaml            ← 主資料（参考資料）の索引
 councils/hoken/215/_meta.shiryo1.yaml    ← 資料1の索引
 councils/hoken/215/_meta.shiryo2.yaml    ← 資料2の索引
-councils/hoken/215/{sanko,shiryo1,shiryo2}/pNNN.md
+councils/hoken/215/_meta.shidai.yaml     ← 議事次第の索引
+councils/hoken/215/{sanko,shiryo1,shiryo2,shidai}/pNNN.md
 ```
 
 解説どうしのリンクは資料をまたげる（`../shiryo2/p005.md`）。

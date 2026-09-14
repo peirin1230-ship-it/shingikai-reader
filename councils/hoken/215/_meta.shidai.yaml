@@ -1,0 +1,40 @@
+# 社会保障審議会 医療保険部会 第215回 議事次第 スライド索引
+#
+# 配置先: councils/hoken/215/_meta.shidai.yaml
+# 生成元: 001748575.pdf (1ページ)
+#
+# 会議体・開催情報は同じディレクトリの _meta.yaml を参照すること。
+#
+# ID体系: hoken-215-shidai-p{PDFページ3桁}
+
+council: hoken
+meeting: 215
+
+document:
+  key: shidai
+  id: 議事次第
+  title: 第215回社会保障審議会医療保険部会 議事次第
+  issuer: 厚生労働省 保険局
+  pdf_pages: 1
+  content_slides: 1
+  agenda: 全体
+
+chapters:
+  - { key: shidai, title: 議事次第, pdf_pages: [1, 1], slides: 1 }
+
+slides:
+  - pdf_page: 1
+    printed_page: null
+    type: 制度概要
+    title: 第215回社会保障審議会医療保険部会 議事次第
+    chapter: shidai
+    themes: [改革経緯]
+    text_ok: true
+    number_verified: false
+
+notes:
+  character: |
+    1ページだけの文書だが、この回の資料全体の入口にあたる。
+    議題2件と配布資料3点、開催日時・場所がここにある。
+    委員名簿（001748576.pdf、2ページ）は実在する個人の氏名・所属の一覧であるため、
+    解説は作成しない。抽出テキストは work/hoken/215/meibo/ にある。
