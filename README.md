@@ -2,6 +2,8 @@
 
 審議会資料を、スライド1枚ずつ背景を含めて精読・注釈するためのリポジトリ。
 
+**公開サイト: https://peirin1230-ship-it.github.io/shingikai-reader/**
+
 最初の対象は **社会保障審議会 医療保険部会 第215回（令和8年9月11日）参考資料「基礎資料」**（全83ページ / 実質72スライド）。
 
 仕様は [`docs/SPEC.md`](docs/SPEC.md)（v0.3）にある。
@@ -105,7 +107,7 @@ python3 build/inspect.py --council hoken --meeting 215 --page 77 --grid
 | v0.3 | 「日本の医療保険制度」章（18枚） | ⬜ |
 | v0.4 | 残り45枚 | ⬜ |
 | v0.5 | テキスト抽出が効かない7枚の数値照合 | ⬜ |
-| v1.0 | GitHub Pages公開 | ⬜ |
+| v1.0 | GitHub Pages公開 | ✅ https://peirin1230-ship-it.github.io/shingikai-reader/ |
 | v1.1 | 資料1・資料2の追加 | ⬜ URLは `manifest.yaml` に記録済み |
 
 第215回の資料1「OTC類似薬の保険給付の見直しの実施について」と
