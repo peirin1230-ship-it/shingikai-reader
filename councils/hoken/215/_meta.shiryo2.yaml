@@ -98,13 +98,13 @@ slides:
       title: 規制改革実施計画（抜粋）地域におけるオンライン診療の更なる推進,
       themes: [医療DX, 受診行動], text_ok: true, number_verified: false }
   - { pdf_page: 22, printed_page: 21, type: 経緯整理, chapter: s2-kisei,
-      title: デジタル社会の実現に向けた重点計画（抜粋①）,
+      title: デジタル社会の実現に向けた重点計画（抜粋①）外国人政策の情報基盤・マイナポータル・電子カルテ,
       themes: [医療DX], text_ok: true, number_verified: false }
   - { pdf_page: 23, printed_page: 22, type: 経緯整理, chapter: s2-kisei,
-      title: デジタル社会の実現に向けた重点計画（抜粋②）,
+      title: デジタル社会の実現に向けた重点計画（抜粋②）電子処方箋・医療費助成の受給者証,
       themes: [医療DX], text_ok: true, number_verified: false }
   - { pdf_page: 24, printed_page: 23, type: 経緯整理, chapter: s2-kisei,
-      title: デジタル社会の実現に向けた重点計画（抜粋③）,
+      title: デジタル社会の実現に向けた重点計画（抜粋③）子育て支援制度レジストリ・税務DX,
       themes: [医療DX], text_ok: true, number_verified: false }
 
   - { pdf_page: 25, printed_page: 24, type: 制度概要, chapter: s2-ueno,
