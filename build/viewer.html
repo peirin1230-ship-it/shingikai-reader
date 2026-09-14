@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shingikai-reader</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231d4e79'/%3E%3Crect x='7' y='9' width='18' height='3' fill='white'/%3E%3Crect x='7' y='15' width='18' height='3' fill='white' opacity='.75'/%3E%3Crect x='7' y='21' width='11' height='3' fill='white' opacity='.5'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#fbfbfa; --panel:#fff; --ink:#1c1c1b; --muted:#6b6b66; --line:#e2e2dd;
+  --accent:#1d4e79; --accent-soft:#eaf1f7; --warn:#a8600a; --warn-soft:#fdf3e3;
+  --chip:#f0f0ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#16181a; --panel:#1e2124; --ink:#e6e6e3; --muted:#9a9a94; --line:#30343a;
+  --accent:#7fb2dd; --accent-soft:#1d2b38; --warn:#e0a75a; --warn-soft:#33281a; --chip:#282c31;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+  font-size:15px;line-height:1.75;-webkit-text-size-adjust:100%}
+a{color:var(--accent);overflow-wrap:anywhere}
+header{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);
+  padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+header h1{font-size:15px;margin:0;font-weight:700;min-width:0}
+header h1 span{color:var(--muted);font-weight:400}
+select,input[type=search]{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line);
+  border-radius:6px;background:var(--bg);color:var(--ink);max-width:100%}
+input[type=search]{min-width:170px;flex:1}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--line);
+  border-radius:6px;background:var(--bg);color:var(--ink);cursor:pointer}
+nav.tabs button[aria-current="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{display:grid;grid-template-columns:232px minmax(0,1fr);gap:0;align-items:start}
+main.noaside{grid-template-columns:minmax(0,1fr)}
+main.noaside aside{display:none}
+aside{border-right:1px solid var(--line);height:calc(100vh - 53px);overflow-y:auto;
+  position:sticky;top:53px;background:var(--panel)}
+aside .chapter{font-size:11px;color:var(--muted);padding:10px 12px 4px;position:sticky;top:0;
+  background:var(--panel);border-bottom:1px solid var(--line);font-weight:700;letter-spacing:.04em}
+aside .item{display:flex;gap:8px;padding:7px 12px;border-bottom:1px solid var(--line);
+  cursor:pointer;align-items:flex-start}
+aside .item:hover{background:var(--accent-soft)}
+aside .item[aria-current="true"]{background:var(--accent-soft);
+  box-shadow:inset 3px 0 0 var(--accent)}
+aside .item img{width:56px;height:39px;object-fit:cover;border:1px solid var(--line);background:var(--chip);flex:none}
+aside .item .ph{width:56px;height:39px;border:1px dashed var(--line);flex:none;display:grid;
+  place-items:center;font-size:9px;color:var(--muted);text-align:center;line-height:1.2}
+aside .item .t{font-size:11.5px;line-height:1.4;min-width:0}
+aside .item .n{color:var(--muted);font-family:var(--mono);font-size:10px}
+section.content{padding:20px 26px 80px;max-width:960px;min-width:0}
+h2{font-size:17px;margin:26px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--line)}
+h3{font-size:15px;margin:18px 0 6px;color:var(--accent)}
+h4{font-size:14px;margin:14px 0 4px}
+.slidehead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:2px}
+.slidehead .page{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.slidehead h2{font-size:21px;border:0;margin:0;padding:0}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 14px}
+.chip{font-size:11.5px;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--muted);
+  border:1px solid var(--line);cursor:pointer}
+.chip.topic{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-soft)}
+.chip.plain{cursor:default}
+.banner{border-left:3px solid var(--warn);background:var(--warn-soft);color:var(--warn);
+  padding:9px 13px;border-radius:0 6px 6px 0;font-size:13px;margin:10px 0}
+.banner.info{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+figure{margin:16px 0;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px}
+figure img{width:100%;display:block;border-radius:4px;cursor:zoom-in}
+figure figcaption{font-size:11.5px;color:var(--muted);margin-top:7px}
+.noimg{border:1px dashed var(--line);border-radius:8px;padding:18px;text-align:center;
+  color:var(--muted);font-size:13px;background:var(--panel)}
+.tablewrap{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;font-size:13px;min-width:100%}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--chip);font-weight:700;white-space:nowrap}
+blockquote{margin:12px 0;padding:8px 14px;border-left:3px solid var(--line);color:var(--muted)}
+code{background:var(--chip);padding:1px 5px;border-radius:4px;font-family:var(--mono);font-size:12.5px}
+hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+ul,ol{padding-left:1.4em}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.card h3{margin-top:0}
+.status{font-size:12px;color:var(--muted)}
+.tl{border-left:2px solid var(--line);margin-left:8px;padding-left:18px}
+.tl .ev{position:relative;margin:0 0 18px}
+.tl .ev::before{content:"";position:absolute;left:-25px;top:7px;width:9px;height:9px;
+  border-radius:50%;background:var(--accent)}
+.tl .d{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.tl .ti{font-weight:700}
+.empty{color:var(--muted);padding:26px;text-align:center}
+.hits{font-size:12px;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--line)}
+footer{border-top:1px solid var(--line);padding:16px 26px;color:var(--muted);font-size:12px;
+  grid-column:1/-1;background:var(--panel)}
+dialog{border:0;padding:0;background:transparent;max-width:96vw;max-height:96vh}
+dialog::backdrop{background:rgba(0,0,0,.82)}
+dialog img{max-width:96vw;max-height:96vh;display:block}
+@media(max-width:820px){
+  header h1 span{display:none}
+  main{grid-template-columns:1fr}
+  aside{position:static;height:auto;max-height:280px;border-right:0;border-bottom:1px solid var(--line)}
+  section.content{padding:16px}
+  nav.tabs{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>shingikai-reader <span id="subtitle"></span></h1>
+  <select id="f-chapter"><option value="">章 ▼</option></select>
+  <select id="f-theme"><option value="">テーマ ▼</option></select>
+  <select id="f-topic"><option value="">論点 ▼</option></select>
+  <input type="search" id="q" placeholder="全文検索">
+  <nav class="tabs">
+    <button data-view="slides" aria-current="true">スライド</button>
+    <button data-view="topics">論点</button>
+    <button data-view="timeline">年表</button>
+    <button data-view="glossary">用語</button>
+    <button data-view="about">この資料について</button>
+  </nav>
+</header>
+<main>
+  <aside id="list"></aside>
+  <section class="content" id="body"></section>
+  <footer id="footer"></footer>
+</main>
+<dialog id="zoom"><img alt=""></dialog>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let DATA = null, view = "slides", current = null;
+const filters = {chapter:"", theme:"", topic:"", q:""};
+
+function slideById(id){ return DATA.slides.find(s => s.id === id); }
+function ref(id){ const s = slideById(id); return s
+  ? `<a href="#/s/${s.id}">p${String(s.pdf_page).padStart(3,"0")} ${esc(s.title)}</a>`
+  : `<code>${esc(id)}</code>`; }
+
+function visible(){
+  return DATA.slides.filter(s => {
+    if (["cover","toc"].includes(s.slide_type)) return false;
+    if (filters.chapter && s.chapter_key !== filters.chapter) return false;
+    if (filters.theme && !s.themes.includes(filters.theme)) return false;
+    if (filters.topic && !s.supports_topics.includes(filters.topic)) return false;
+    if (filters.q && !(s.search || "").toLowerCase().includes(filters.q.toLowerCase())) return false;
+    return true;
+  });
+}
+
+function renderList(){
+  const list = $("#list");
+  if (view !== "slides"){
+    list.innerHTML = "";
+    $("main").classList.add("noaside");
+    return;
+  }
+  $("main").classList.remove("noaside");
+  const items = visible();
+  let html = `<div class="hits">${items.length}枚${filters.q ? ` / 「${esc(filters.q)}」` : ""}</div>`;
+  let chapter = null;
+  for (const s of items){
+    if (s.chapter !== chapter){ chapter = s.chapter; html += `<div class="chapter">${esc(chapter)}</div>`; }
+    const warn = s.has_commentary && !s.number_verified ? " ⚠" : "";
+    const thumb = s.thumb
+      ? `<img src="${s.thumb}" alt="" loading="lazy">`
+      : `<div class="ph">画像<br>非表示</div>`;
+    html += `<div class="item" data-id="${s.id}" aria-current="${s.id === current}">
+      ${thumb}<div class="t"><span class="n">p${String(s.pdf_page).padStart(3,"0")}</span>
+      ${s.has_commentary ? "" : "<span class=\"n\"> 未</span>"}${warn}<br>${esc(s.title)}</div></div>`;
+  }
+  list.innerHTML = html || `<div class="empty">該当なし</div>`;
+  list.querySelectorAll(".item").forEach(el =>
+    el.onclick = () => { location.hash = `#/s/${el.dataset.id}`; });
+  const cur = list.querySelector('[aria-current="true"]');
+  if (cur) cur.scrollIntoView({block:"nearest"});
+}
+
+function slideView(s){
+  const meeting = DATA.meetings.find(m => m.council === s.council && m.meeting === s.meeting) || {};
+  let h = `<div class="slidehead">
+      <span class="page">p${String(s.pdf_page).padStart(3,"0")} / ${meeting.pdf_pages ?? "?"}
+      ${s.printed_page != null ? `・スライド${s.printed_page}` : ""}</span>
+      <h2>${esc(s.title)}</h2></div>
+    <div class="status">${esc(s.council_name)} 第${esc(s.meeting)}回 ${esc(s.document ?? "")}
+      ／ ${esc(s.chapter)}</div>
+    <div class="meta">
+      <span class="chip plain">${esc(s.slide_type)}</span>
+      ${s.themes.map(t => `<span class="chip" data-theme="${esc(t)}">${esc(t)}</span>`).join("")}
+      ${s.supports_topics.map(t => `<span class="chip topic" data-topic="${esc(t)}">→ ${esc(t)}</span>`).join("")}
+    </div>`;
+
+  if (!s.text_extractable)
+    h += `<div class="banner">⚠ 図表が画像で貼られており、原典のテキスト層がほぼ空のページ。
+      解説中の数値は画像から読み取ったもので、人による照合がまだ済んでいない。
+      本文の【要確認】に注意すること。</div>`;
+  else if (s.has_commentary && !s.number_verified)
+    h += `<div class="banner">⚠ 数値の突合が未了（number_verified: false）。
+      一次情報は原典にあたること。</div>`;
+  if (s.third_party_figure)
+    h += `<div class="banner info">この図は第三者が権利を持つ著作物のため、画像を表示していない。
+      原典PDFで確認すること。${s.origin ? `<br>転載元: ${esc(s.origin)}` : ""}
+      ${s.data_source ? `<br>出典: ${esc(s.data_source)}` : ""}</div>`;
+
+  h += s.image
+    ? `<figure><img src="${s.image}" alt="${esc(s.title)}">
+       <figcaption>出典: ${esc(s.council_name)} 第${esc(s.meeting)}回 ${esc(s.document ?? "")}
+       「${esc(meeting.document ?? "")}」${s.printed_page != null ? s.printed_page + "ページ" : ""}
+       （厚生労働省）${meeting.materials_url ? ` · <a href="${meeting.materials_url}">資料一覧</a>` : ""}
+       </figcaption></figure>`
+    : `<div class="noimg">スライド画像は配信していない${s.third_party_figure ? "（第三者著作物）" : ""}</div>`;
+
+  if (s.html) h += s.html;
+  else {
+    h += `<div class="empty">このスライドの解説はまだ書かれていない。</div>`;
+    if (s.note) h += `<div class="card"><h3>索引のメモ</h3><p>${esc(s.note)}</p></div>`;
+    if (s.origin) h += `<div class="card"><h3>転載元</h3><p>${esc(s.origin)}</p></div>`;
+    if (s.data_source) h += `<div class="card"><h3>出典</h3><p>${esc(s.data_source)}</p></div>`;
+  }
+  return h;
+}
+
+function topicsView(){
+  return `<h2>改革論点</h2>
+    <p class="status">基礎資料のスライドから <code>supports_topics</code> で逆引きした結果。
+    章の並びは統計の並びであって論点の並びではないので、こちらから読むほうが速い。</p>` +
+    DATA.topics.map(t => `<div class="card">
+      <h3>${esc(t.title)}</h3>
+      <p class="status">${esc(t.status ?? "")}</p>
+      ${t.summary ? `<p>${esc(t.summary).replace(/\n/g, "<br>")}</p>` : ""}
+      ${t.history?.length ? `<h4>経緯</h4><ul>${t.history.map(h =>
+        `<li><span class="status">${esc(h.date)}</span> ${esc(h.event)}
+         ${h.slide ? ` — ${ref(h.slide)}` : ""}</li>`).join("")}</ul>` : ""}
+      <h4>根拠になるスライド（${t.evidence_slides.length}）</h4>
+      ${t.evidence_slides.length
+        ? `<ul>${t.evidence_slides.map(id => `<li>${ref(id)}</li>`).join("")}</ul>`
+        : `<p class="status">まだ紐づいたスライドがない</p>`}
+      ${t.watch ? `<h4>読みどころ</h4><p>${esc(t.watch).replace(/\n/g, "<br>")}</p>` : ""}
+      ${t.positions?.note ? `<p class="status">${esc(t.positions.note)}</p>` : ""}
+    </div>`).join("");
+}
+
+function timelineView(){
+  const rows = [...DATA.timeline].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  return `<h2>制度改正年表</h2>
+    <p class="status">初期データはスライド75・76・77・82・83から起こした。
+    「この年表に載っているのは基礎資料に載っている改正だけ」である点に注意。</p>
+    <div class="tl">` + rows.map(e => `<div class="ev">
+      <div class="d">${esc(e.era ?? e.date)}${e.law ? ` ・ ${esc(e.law)}` : ""}
+        ${e.confidence === "medium" ? " ・ confidence: medium" : ""}</div>
+      <div class="ti">${esc(e.title)}</div>
+      ${e.summary ? `<div>${esc(e.summary)}</div>` : ""}
+      ${e.source_slides?.length
+        ? `<div class="status">根拠: ${e.source_slides.map(ref).join(" ／ ")}</div>` : ""}
+      ${e.verified_by ? `<div class="status">裏取り: ${esc(e.verified_by)}</div>` : ""}
+    </div>`).join("") + `</div>`;
+}
+
+function glossaryView(){
+  return `<h2>用語</h2>
+    <p class="status">登場スライドはビルド時に逆引きしている。</p>` +
+    DATA.glossary.map(g => `<div class="card" id="g-${esc(g.key)}">
+      <h3>${esc(g.term)}${g.reading ? ` <span class="status">${esc(g.reading)}</span>` : ""}</h3>
+      ${g.html}
+      ${g.slides?.length ? `<h4>登場するスライド</h4><ul>${g.slides.map(id =>
+        `<li>${ref(id)}</li>`).join("")}</ul>` : ""}
+    </div>`).join("");
+}
+
+function aboutView(){
+  const m = DATA.meetings[0] || {};
+  const written = DATA.slides.filter(s => s.has_commentary).length;
+  const content = DATA.slides.filter(s => !["cover","toc","chapter"].includes(s.slide_type)).length;
+  return `<h2>この資料について</h2>
+    <div class="card">
+      <h3>${esc(m.council_name)} 第${esc(m.meeting)}回</h3>
+      <p class="status">${esc(m.date)}／${esc(m.venue ?? "")}</p>
+      <p><strong>議題</strong></p><ul>${(m.agendas || []).map(a => `<li>${esc(a)}</li>`).join("")}</ul>
+      <p><strong>資料</strong> ${esc(m.document_id ?? "")}「${esc(m.document ?? "")}」
+        全${esc(m.pdf_pages)}ページ（実質${esc(m.content_slides)}スライド）</p>
+      <p><strong>解説の進捗</strong> ${written} / ${content} 枚</p>
+      <p><strong>議事録</strong> ${m.minutes?.published ? `<a href="${m.minutes.url}">公開済み</a>`
+        : "未公開。委員の発言は記載していない"}</p>
+      ${m.materials_url ? `<p><a href="${m.materials_url}">厚生労働省の資料一覧ページ</a></p>` : ""}
+    </div>
+    <h3>参照した文書</h3>
+    ${DATA.documents.map(d => `<div class="card">
+      <h3>${esc(d.title)}${d.law_number ? `（${esc(d.law_number)}）` : ""}</h3>
+      <p class="status">${esc(d.type)}${d.era ? ` ・ ${esc(d.era)}` : ""}</p>
+      ${d.summary ? `<p>${esc(d.summary).replace(/\n/g, "<br>")}</p>` : ""}
+      <p><a href="${esc(d.url)}">${esc(d.url)}</a></p>
+      ${d.url_note ? `<p class="status">${esc(d.url_note).replace(/\n/g, "<br>")}</p>` : ""}
+    </div>`).join("")}
+    <h3>読むときの注意</h3>
+    <div class="card">
+      <ul>
+        <li>内容の正確性は保証しない。一次情報は必ず原典にあたること。</li>
+        <li>⚠ が付いたスライドは、数値が人の目で照合されていない。</li>
+        <li>図表が画像で貼られたページ（7枚）は、解説中の数値に【要確認】が付いている。</li>
+        <li>第三者が権利を持つ図は画像を表示していない。</li>
+        <li>委員の発言は、議事録が公開されるまで記載しない。</li>
+      </ul>
+    </div>`;
+}
+
+function render(){
+  const body = $("#body");
+  if (view === "slides"){
+    const s = current ? slideById(current) : visible()[0];
+    body.innerHTML = s ? slideView(s) : `<div class="empty">該当するスライドがない</div>`;
+    body.querySelectorAll("[data-theme]").forEach(el => el.onclick = () => {
+      filters.theme = el.dataset.theme; $("#f-theme").value = filters.theme; renderList(); });
+    body.querySelectorAll("[data-topic]").forEach(el => el.onclick = () => {
+      filters.topic = el.dataset.topic; $("#f-topic").value = filters.topic;
+      view = "slides"; syncTabs(); renderList(); });
+    body.querySelectorAll("figure img").forEach(img => img.onclick = () => {
+      const dlg = $("#zoom"); dlg.querySelector("img").src = img.src; dlg.showModal(); });
+  } else {
+    body.innerHTML = {topics:topicsView, timeline:timelineView,
+                      glossary:glossaryView, about:aboutView}[view]();
+  }
+  renderList();
+  scrollTo({top:0});
+}
+
+function syncTabs(){
+  document.querySelectorAll("nav.tabs button").forEach(b =>
+    b.setAttribute("aria-current", String(b.dataset.view === view)));
+}
+
+function route(){
+  const m = location.hash.match(/^#\/(s|g|t)\/(.+)$/);
+  if (!m){ render(); return; }
+  const [, kind, key] = m;
+  if (kind === "s"){ view = "slides"; current = decodeURIComponent(key); }
+  else if (kind === "g"){ view = "glossary"; }
+  else if (kind === "t"){ view = "slides"; filters.topic = decodeURIComponent(key);
+    $("#f-topic").value = filters.topic; }
+  syncTabs(); render();
+  if (kind === "g"){
+    const el = document.getElementById(`g-${decodeURIComponent(key)}`);
+    if (el) el.scrollIntoView({block:"start"});
+  }
+}
+
+fetch("data.json").then(r => r.json()).then(data => {
+  DATA = data;
+  const m = DATA.meetings[0] || {};
+  $("#subtitle").textContent = `${m.council_name ?? ""} 第${m.meeting ?? ""}回 ${m.document_id ?? ""}`;
+  document.title = `${m.council_name ?? ""} 第${m.meeting ?? ""}回 ${m.document ?? ""} — shingikai-reader`;
+  $("#footer").innerHTML = `${esc(DATA.footer)}<br>
+    出典: ${esc(m.council_name)} 第${esc(m.meeting)}回 ${esc(m.document_id)}「${esc(m.document)}」（厚生労働省）
+    ${m.materials_url ? `<a href="${m.materials_url}">${m.materials_url}</a>` : ""}<br>
+    解説本文は CC BY 4.0。審議会資料は厚生労働省のもの（公共データ利用規約 第1.0版／第三者著作物を除く）。`;
+
+  const chapters = [];
+  for (const s of DATA.slides)
+    if (s.chapter_key && !chapters.some(c => c[0] === s.chapter_key))
+      chapters.push([s.chapter_key, s.chapter]);
+  for (const [k, label] of chapters)
+    $("#f-chapter").insertAdjacentHTML("beforeend", `<option value="${esc(k)}">${esc(label)}</option>`);
+  for (const t of [...new Set(DATA.slides.flatMap(s => s.themes))].sort())
+    $("#f-theme").insertAdjacentHTML("beforeend", `<option value="${esc(t)}">${esc(t)}</option>`);
+  for (const t of DATA.topics)
+    $("#f-topic").insertAdjacentHTML("beforeend", `<option value="${esc(t.title)}">${esc(t.title)}</option>`);
+
+  $("#f-chapter").onchange = e => { filters.chapter = e.target.value; renderList(); };
+  $("#f-theme").onchange = e => { filters.theme = e.target.value; renderList(); };
+  $("#f-topic").onchange = e => { filters.topic = e.target.value; renderList(); };
+  $("#q").oninput = e => { filters.q = e.target.value.trim(); renderList(); };
+  document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
+    view = b.dataset.view; syncTabs(); render(); });
+  $("#zoom").onclick = () => $("#zoom").close();
+  addEventListener("hashchange", route);
+  route();
+}).catch(err => {
+  $("#body").innerHTML = `<div class="empty">data.json を読めなかった: ${esc(err.message)}<br>
+    ローカルで開くときは <code>make serve</code> を使うこと（file:// では fetch できない）。</div>`;
+});
+</script>
+</body>
+</html>

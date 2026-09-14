@@ -1,0 +1,31 @@
+name: 用語未作成
+description: kb/glossary に項目がない用語がある
+title: "[用語] "
+labels: [glossary]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        `build/validate.py` が「terms が kb/glossary にない（未作成）」と出した用語は、
+        このテンプレートで起票してください。
+  - type: input
+    id: term
+    attributes:
+      label: 用語
+      placeholder: 財政安定化基金
+    validations: { required: true }
+  - type: input
+    id: slides
+    attributes:
+      label: 登場するスライド
+      description: 分かる範囲で。複数ある場合はカンマ区切り
+      placeholder: hoken-215-sanko-p082, hoken-215-sanko-p042
+  - type: textarea
+    id: definition
+    attributes:
+      label: 定義の案
+      description: 一行定義だけでも助かります
+  - type: input
+    id: law
+    attributes:
+      label: 根拠法令

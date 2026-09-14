@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 原典（厚生労働省）
+    url: https://www.mhlw.go.jp/stf/newpage_76146.html
+    about: 第215回社会保障審議会医療保険部会の資料一覧。一次情報はこちらで確認してください
+  - name: 仕様書
+    url: https://github.com/peirin1230-ship-it/shingikai-reader/blob/main/docs/SPEC.md
+    about: このリポジトリの設計方針

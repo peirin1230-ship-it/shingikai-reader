@@ -1,0 +1,20 @@
+name: link check
+
+# 外部URLの死活だけを見る。落ちても解説の内容が壊れたわけではないので
+# PRの必須チェックには入れず、週次と手動でだけ走らせる
+on:
+  schedule:
+    - cron: '0 21 * * 0'
+  workflow_dispatch:
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml
+      - name: URLの死活
+        run: python build/validate.py --all --check-urls

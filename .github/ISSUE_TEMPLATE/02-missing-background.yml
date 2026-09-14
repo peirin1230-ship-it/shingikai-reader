@@ -1,0 +1,37 @@
+name: 背景が不足している
+description: 解説の背景（§4）や論点（§6）が足りない／踏み込みが浅い
+title: "[背景不足] "
+labels: [background]
+body:
+  - type: input
+    id: slide
+    attributes:
+      label: スライドID
+      placeholder: hoken-215-sanko-p076
+    validations: { required: true }
+  - type: dropdown
+    id: section
+    attributes:
+      label: どの節か
+      options:
+        - "3. このスライドの役割"
+        - "4-1. 制度背景"
+        - "4-2. 政策背景"
+        - "4-3. 数字の背景"
+        - "6. この事実が支える論点"
+        - "7. 数字の読み方の注意"
+        - "8. 関連スライド"
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes:
+      label: 何が足りないか
+      description: |
+        「この改正の経緯として○○がある」「この数字は○○と併せて読むべき」など。
+        分かっている範囲で構いません
+    validations: { required: true }
+  - type: input
+    id: source
+    attributes:
+      label: 参考になる資料
+      description: 他の審議会資料、報告書、法令など

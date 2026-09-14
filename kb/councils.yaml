@@ -1,0 +1,86 @@
+# 会議体マスタ
+#
+# key は councils/{key}/ のディレクトリ名およびID体系 {council}-{回}-{資料}-p{NNN} に対応する。
+# 資料を1枚でも取り込んだ会議体だけでなく、転載元として登場する会議体もここに置く
+# （スライドの origin から会議体をたどれるようにするため）。
+
+- key: hoken
+  name: 社会保障審議会 医療保険部会
+  short_name: 医療保険部会
+  parent: 社会保障審議会
+  ministry: 厚生労働省
+  bureau: 保険局総務課
+  index_url: https://www.mhlw.go.jp/stf/newpage_28708.html
+  status: active            # 資料を取り込み済み
+  scope: 医療保険制度の給付と負担の制度設計
+
+- key: iryo
+  name: 社会保障審議会 医療部会
+  short_name: 医療部会
+  parent: 社会保障審議会
+  ministry: 厚生労働省
+  bureau: 医政局総務課
+  index_url: https://www.mhlw.go.jp/stf/shingi/shingi-hosho_126719.html
+  status: planned
+  scope: 医療提供体制。医療法に関する事項
+
+- key: kaigo-kyufuhi
+  name: 社会保障審議会 介護給付費分科会
+  short_name: 介護給付費分科会
+  parent: 社会保障審議会
+  ministry: 厚生労働省
+  bureau: 老健局老人保健課
+  index_url: https://www.mhlw.go.jp/stf/shingi/shingi-hosho_126698.html
+  status: planned
+  scope: 介護報酬の設定
+
+- key: chuikyo
+  name: 中央社会保険医療協議会
+  short_name: 中医協
+  parent: null              # 社会保障審議会の下部組織ではない。厚生労働大臣の諮問機関
+  ministry: 厚生労働省
+  bureau: 保険局医療課
+  index_url: https://www.mhlw.go.jp/stf/shingi/shingi-chuo_128154.html
+  status: planned
+  scope: 診療報酬・薬価の点数および価格の設定
+  note: |
+    医療保険部会が「給付と負担の制度設計」を扱うのに対し、中医協は「価格の設定」を扱う。
+    第215回基礎資料のスライド60（国民医療費・薬剤費等の推移）は中医協資料からの転載。
+
+# ---- 他省の会議体。転載元として登場する ----
+- key: zaiseishin
+  name: 財政制度等審議会 財政制度分科会
+  short_name: 財政審
+  parent: 財政制度等審議会
+  ministry: 財務省
+  index_url: https://www.mof.go.jp/about_mof/councils/fiscal_system_council/sub-of_fiscal_system/proceedings/
+  status: reference_only    # 資料は取り込まないが、転載元としてリンクする
+  scope: 予算編成に向けた歳出改革の議論
+  note: 基礎資料スライド75（社会保障関係費の伸び）は財政審資料からの転載。
+
+- key: kodomo-seiiku
+  name: こども家庭審議会 成育医療等分科会
+  short_name: 成育医療等分科会
+  parent: こども家庭審議会
+  ministry: こども家庭庁
+  status: reference_only
+  scope: 妊産婦・乳幼児の保健医療
+  note: 基礎資料スライド21（妊産婦死亡率・乳児死亡率の推移）は本分科会資料からの転載。
+
+- key: kenko-nippon21
+  name: 健康日本21（第三次）推進専門委員会
+  short_name: 健康日本21推進専門委員会
+  parent: 厚生科学審議会
+  ministry: 厚生労働省
+  status: reference_only
+  scope: 健康増進の国民運動
+  note: 基礎資料スライド8（平均寿命と健康寿命の推移）は本委員会資料からの転載（一部改変）。
+
+- key: chiiki-iryo-koso
+  name: 新たな地域医療構想等に関する検討会
+  short_name: 新地域医療構想検討会
+  parent: null
+  ministry: 厚生労働省
+  status: reference_only
+  scope: 2040年頃を見据えた医療提供体制
+  note: 基礎資料スライド46・50・51はこの検討会資料からの転載。

@@ -1,0 +1,42 @@
+name: 事実誤認の疑い
+description: 解説の記述が原典と食い違っている／事実として誤っている
+title: "[事実誤認] "
+labels: [fact-error]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ご指摘ありがとうございます。解説には誤りが混入しうるので、遠慮なく出してください。
+        数値の誤りは `number-unverified` ラベルの付いたスライドで特に起きやすいです。
+  - type: input
+    id: slide
+    attributes:
+      label: スライドID
+      description: 解説の先頭（フロントマター）にある id。例 hoken-215-sanko-p076
+      placeholder: hoken-215-sanko-p076
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes:
+      label: どの記述が誤っているか
+      description: 該当箇所を引用してください。節番号（例 §2 書いてあること）もあると助かります
+    validations: { required: true }
+  - type: textarea
+    id: correct
+    attributes:
+      label: 正しくはどうあるべきか
+    validations: { required: true }
+  - type: input
+    id: source
+    attributes:
+      label: 根拠
+      description: 原典の該当ページ、法令、統計など。URLがあれば
+  - type: checkboxes
+    id: kind
+    attributes:
+      label: 種類
+      options:
+        - label: 数値の転記ミス
+        - label: 制度の説明の誤り
+        - label: 日付・年度の誤り
+        - label: 出典の誤り

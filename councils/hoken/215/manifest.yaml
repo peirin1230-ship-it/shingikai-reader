@@ -1,0 +1,109 @@
+# 第215回 社会保障審議会医療保険部会 の原典PDF
+#
+# 原典はリポジトリにコミットしない（SPEC §1.1 / §7.2）。
+# build/fetch.py がこのファイルのURLから取得し、SHA256を検証して source/ に置く。
+#
+# 審議会資料は訂正版に差し替えられることがある。ハッシュ不一致は「エラー」ではなく
+# 「警告」として扱い、下の revisions に追記して新しいハッシュへ更新する。
+# 差し替えが起きたら、その資料の解説は数値を洗い直すこと。
+
+council: hoken
+meeting: 215
+meeting_date: 2026-09-11
+
+# 資料一覧ページ。個々のPDFのURLはここからたどれる
+materials_url: https://www.mhlw.go.jp/stf/newpage_76146.html
+index_url: https://www.mhlw.go.jp/stf/newpage_28708.html
+
+documents:
+  - key: sanko
+    id: 参考資料
+    title: 基礎資料
+    url: https://www.mhlw.go.jp/content/12401000/001748578.pdf
+    sha256: cd152559d41f48ec0d328b44fba7dd6672f6240ac0cd27bf40fa7cafb30495a3
+    bytes: 6633147
+    pages: 83
+    page_size_pt: [780, 540]
+    fetched_at: 2026-09-13
+    # HTTPレスポンスの Last-Modified。部会当日の朝に掲載されている
+    last_modified: 2026-09-11T00:24:14Z
+    # 取得したファイルのSHA256が上の値と一致することを確認済み
+    verified: true
+    # active: true の資料だけが fetch.py / extract.py の既定の対象になる
+    active: true
+
+  # ---- 取得・検証済みだが、まだ解説の対象にしていない資料（SPEC §5 / v1.1で追加する）----
+  # active: false なので fetch.py / extract.py の既定の対象から外れる。
+  # 個別に扱うときは --document で指定するか --include-inactive を付ける。
+  # 解説を書き始めるときに active: true にし、_meta.yaml の acquired も true にする
+  - key: shiryo1
+    id: 資料1
+    title: OTC類似薬の保険給付の見直しの実施について
+    url: https://www.mhlw.go.jp/content/12401000/001748716.pdf
+    sha256: 8f24e3c1aea32c36c9aca95bdc11eb551d9bc63565b7e0f14975cdb295e1102e
+    bytes: 2091187
+    pages: 25
+    fetched_at: 2026-09-14
+    verified: true
+    active: false
+
+  - key: shiryo2
+    id: 資料2
+    title: 次期医療保険制度改革に向けて
+    url: https://www.mhlw.go.jp/content/12401000/001748577.pdf
+    sha256: ea338c58738f89ca0ae8d45b57bc99ff81a7e1937df77012326b578b546b9b68
+    bytes: 1406480
+    pages: 34
+    fetched_at: 2026-09-14
+    verified: true
+    active: false
+
+  - key: shidai
+    id: 議事次第
+    title: 議事次第
+    url: https://www.mhlw.go.jp/content/12401000/001748575.pdf
+    sha256: 870157ddad534b67cf7857af7b36f80406bb0b97e0afa7baf422182d6c3e3507
+    bytes: 53220
+    pages: 1
+    fetched_at: 2026-09-14
+    verified: true
+    active: false
+
+  - key: meibo
+    id: 委員名簿
+    title: 委員名簿
+    url: https://www.mhlw.go.jp/content/12401000/001748576.pdf
+    sha256: f90d07990e9168ad6664341c752534d9359a8efca2ded87b451915ec416264ff
+    bytes: 66871
+    pages: 2
+    fetched_at: 2026-09-14
+    verified: true
+    active: false
+
+  - key: zentai
+    id: 全体版
+    title: 第215回医療保険部会資料（全体版）
+    url: https://www.mhlw.go.jp/content/12401000/001748717.pdf
+    sha256: 7d00fbeda011bd042dc64b513d48eb063e3f5280b02568768e3e1b5b399b109b
+    bytes: 9970299
+    pages: 145
+    fetched_at: 2026-09-14
+    verified: true
+    active: false
+    note: 議事次第から参考資料までを1本にまとめたもの。個別PDFがあるので通常は不要
+
+# ---------------------------------------------------------------------------
+# 改訂履歴。差し替えを検知したら追記する
+#   - { date: 2026-10-01, key: sanko, old_sha256: ..., new_sha256: ..., note: ... }
+# ---------------------------------------------------------------------------
+revisions: []
+
+# ---------------------------------------------------------------------------
+# 原典が厚労省サイトから消えた場合の備え（SPEC §1.1）
+#   過去回の資料ページは長期間残る運用になっており消失リスクは低いが、
+#   保存URLは人が確認・作成すること。ここは未確認のまま置いてある。
+# ---------------------------------------------------------------------------
+web_archive:
+  checked: false
+  url: null
+  hint: https://web.archive.org/web/*/https://www.mhlw.go.jp/content/12401000/001748578.pdf

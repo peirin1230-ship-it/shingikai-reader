@@ -1,0 +1,89 @@
+# 文書マスタ（骨太／改革工程／法律／報告書／規約）
+#
+# URLは必須。すべて2026-09-13時点で HTTP 200 を確認したものだけを url に置いている。
+# 確認できなかったURLは unverified_url に退避し、validate.py --check-urls の対象から外す。
+
+- key: kaikaku-kotei-2023
+  type: 閣議決定
+  title: 全世代型社会保障構築を目指す改革の道筋（改革工程）
+  date: 2023-12-22
+  era: 令和5年12月22日
+  issuer: 政府（全世代型社会保障構築本部）
+  summary: |
+    改革課題を3つの「時間軸」に割り付けた工程表。
+    ①2024年度に実施する取組、②加速化プランの実施が完了する2028年度までに実施について
+    検討する取組、③2040年頃を見据えた中長期的な取組。
+    ②は2028年度までの各年度の予算編成過程で実施すべき施策を検討・決定するとされている。
+  # 厚労省保険局が医療保険部会向けに抜粋した版。医療保険部会の議論で参照されるのはこの範囲
+  url: https://www.mhlw.go.jp/content/12401000/001193846.pdf
+  url_note: |
+    第174回社会保障審議会医療保険部会（令和6年1月19日）資料4-1「（保険局部分抜粋）」。
+    全文ではない。全文は内閣官房 全世代型社会保障構築本部のサイトにある。
+  unverified_url: https://www.cas.go.jp/jp/seisaku/zensedai_shakaihosho_kochiku/index.html
+  slides: [hoken-215-sanko-p083]
+  topics: [高齢者負担の在り方, 医療保険における金融所得の勘案, 経済情勢に対応した患者負担等の見直し, 高額療養費制度の見直し, 保険者間の負担調整, 医療費適正化]
+
+- key: kenpo-kaisei-2026
+  type: 法律
+  title: 健康保険法等の一部を改正する法律
+  law_number: 令和8年法律第31号
+  date: 2026-06-05
+  era: 令和8年6月5日公布
+  issuer: 厚生労働省 保険局
+  summary: |
+    一部保険外療養の創設、後期高齢者医療における金融所得の勘案、出産に係る給付体系の見直し、
+    国民健康保険の子どもに係る均等割保険料等の軽減の拡充、医療機関の業務効率化・勤務環境改善など。
+    施行期日は令和9年4月1日が原則だが、項目ごとに公布日から公布後5年以内まで分散している。
+  url: https://www.mhlw.go.jp/content/12400000/001713111.pdf
+  url_note: |
+    全11ページの「概要」。その1ページ目が基礎資料のスライド82とまったく同じ内容である。
+    2ページ目以降に各項目の詳細があるので、スライド82を読むときはこちらを併せて見るとよい。
+  related_urls:
+    - { title: 第221回国会（令和8年特別会）提出法律案, url: "https://www.mhlw.go.jp/stf/topics/bukyoku/soumu/houritu/221.html" }
+    - { title: 健康保険法等の一部を改正する法律（令和8年法律第31号）の成立について（令和8年6月18日 保険局）, url: "https://www.mhlw.go.jp/content/12401000/001712849.pdf" }
+    - { title: 医療保険制度改正法が成立しました（厚生労働省）, url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/newpage_00014.html" }
+    - { title: 健康保険法等の一部を改正する法律案について（第211回社会保障審議会医療保険部会 資料1 令和8年3月19日）, url: "https://www.mhlw.go.jp/content/12401000/001676380.pdf" }
+  slides: [hoken-215-sanko-p082, hoken-215-sanko-p076]
+  topics: [OTC類似薬の保険給付の見直し, 医療保険における金融所得の勘案, 出産に係る給付体系の見直し, 高額療養費制度の見直し]
+
+- key: zensedai-taio-2023
+  type: 法律
+  title: 全世代対応型の持続可能な社会保障制度を構築するための健康保険法等の一部を改正する法律
+  law_number: 令和5年法律第31号
+  date: 2023-05-19
+  era: 令和5年5月19日公布
+  issuer: 厚生労働省 保険局
+  summary: |
+    出産育児一時金の費用の一部を後期高齢者医療制度が支援する仕組み、
+    前期高齢者財政調整への報酬水準の勘案、高齢者負担率の見直しなどの根拠法。
+    スライド76が令和6年度の施行内容として挙げる3項目はこの法律による。
+  url: https://www.mhlw.go.jp/stf/topics/bukyoku/soumu/houritu/211.html
+  url_note: 第211回国会（令和5年常会）提出法律案の一覧ページ。法律案・概要・新旧対照条文へのリンクがある。
+  verified_by: e-Gov法令検索（健康保険法の改正沿革。公布 2023-05-19、施行 2023-05-19 / 2024-04-01 / 2026-04-01）
+  slides: [hoken-215-sanko-p076]
+  topics: [出産に係る給付体系の見直し, 高齢者負担率の見直し, 保険者間の負担調整]
+
+- key: pdl-1-0
+  type: 利用規約
+  title: 公共データ利用規約（第1.0版）
+  issuer: デジタル庁
+  summary: |
+    政府標準利用規約。出典を明記すれば複製・公衆送信・翻案ができる。
+    編集・加工した場合はその旨を記載すること、国が作成したかのような態様で公表しないことが条件。
+    ★第三者が権利を持つコンテンツには適用されない。
+  url: https://www.digital.go.jp/resources/open_data/public_data_license_v1.0
+  related_urls:
+    - { title: 利用規約・リンク・著作権等（厚生労働省）, url: "https://www.mhlw.go.jp/chosakuken/index.html" }
+  topics: []
+
+- key: hoken-215-materials
+  type: 審議会資料
+  title: 第215回 社会保障審議会 医療保険部会 資料
+  date: 2026-09-11
+  era: 令和8年9月11日
+  issuer: 厚生労働省 保険局
+  summary: 本リポジトリが最初に扱う回の資料一覧ページ。参考資料「基礎資料」はここから取得している。
+  url: https://www.mhlw.go.jp/stf/newpage_76146.html
+  related_urls:
+    - { title: 社会保障審議会（医療保険部会）資料一覧, url: "https://www.mhlw.go.jp/stf/newpage_28708.html" }
+  topics: [OTC類似薬の保険給付の見直し]

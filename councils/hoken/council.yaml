@@ -1,0 +1,27 @@
+# 社会保障審議会 医療保険部会
+key: hoken
+name: 社会保障審議会 医療保険部会
+short_name: 医療保険部会
+parent: 社会保障審議会
+ministry: 厚生労働省
+bureau: 保険局総務課
+
+# 資料一覧ページ（回ごとのページはここからたどる）
+index_url: https://www.mhlw.go.jp/stf/newpage_28708.html
+
+# 厚労省のコンテンツURLの局コード。原典PDFは https://www.mhlw.go.jp/content/{content_prefix}/{id}.pdf
+content_prefix: "12401000"
+
+description: |
+  医療保険制度の在り方を審議する社会保障審議会の部会。診療報酬の点数設定そのものは
+  中央社会保険医療協議会（中医協）が扱うため、ここでは給付と負担の制度設計
+  （患者負担割合、高額療養費、保険者間の財政調整、保険料の算定など）が主題になる。
+
+# この会議体で頻出し、他会議体と共有される用語の目安
+core_themes:
+  - 患者負担
+  - 高額療養費
+  - 保険者財政
+  - 世代間負担
+  - 高齢者医療
+  - 医療費適正化

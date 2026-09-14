@@ -1,0 +1,732 @@
+# 社会保障審議会 医療保険部会 第215回 参考資料「基礎資料」スライド索引
+#
+# 配置先: councils/hoken/215/_meta.yaml
+# 生成元: 001748578.pdf (83ページ / 6,633,147 bytes)
+#
+# ID体系: {council}-{回}-{資料}-p{PDFページ3桁}  例) hoken-215-sanko-p029
+# 注意:   printed_page はスライドに印刷された番号。pdf_page = printed_page + 1
+#         ファイル名・IDは pdf_page を使う（表紙・目次に印刷番号がないため）
+#
+# ★原典PDFはリポジトリにコミットしない。取得情報は manifest.yaml を参照
+
+council: hoken
+meeting: 215
+meeting_date: 2026-09-11
+meeting_time: "10:00-12:00"
+venue: 航空会館7階大ホール（港区新橋1-18-1）
+materials_url: https://www.mhlw.go.jp/stf/newpage_76146.html
+notice_url: https://www.mhlw.go.jp/stf/newpage_76068.html
+agendas:
+  - OTC類似薬の保険給付の見直しの実施について
+  - 医療保険制度改革について
+
+document:
+  key: sanko
+  id: 参考資料
+  title: 基礎資料
+  issuer: 厚生労働省 保険局
+  pdf_pages: 83
+  content_slides: 72   # 表紙1 + 目次1 + 章扉9 を除く
+
+minutes:
+  published: false          # 2026-09-13時点で資料一覧の議事録欄は「－」
+  url: ""
+  index_url: https://www.mhlw.go.jp/stf/newpage_28708.html   # 公開されたらここに載る
+
+# 同じ回の他資料
+#   acquired: false = まだ councils/hoken/215/{key}/ を作っていない。URLは確認済みなので
+#   manifest.yaml に追記すれば fetch.py がそのまま取得できる（SPEC §5 / v1.1）
+#   ★資料2の title は資料そのものの表題。議題名（医療保険制度改革について）とは異なる
+related_documents:
+  - { key: shidai,  id: 議事次第, title: "議事次第",
+      url: "https://www.mhlw.go.jp/content/12401000/001748575.pdf", acquired: false }
+  - { key: meibo,   id: 委員名簿, title: "委員名簿",
+      url: "https://www.mhlw.go.jp/content/12401000/001748576.pdf", acquired: false }
+  - { key: shiryo1, id: 資料1, title: "OTC類似薬の保険給付の見直しの実施について",
+      url: "https://www.mhlw.go.jp/content/12401000/001748716.pdf", acquired: false }
+  - { key: shiryo2, id: 資料2, title: "次期医療保険制度改革に向けて",
+      url: "https://www.mhlw.go.jp/content/12401000/001748577.pdf", acquired: false }
+  - { key: zentai,  id: 全体版, title: "第215回医療保険部会資料（全体版）",
+      url: "https://www.mhlw.go.jp/content/12401000/001748717.pdf", acquired: false }
+
+# ---------------------------------------------------------------------------
+# 章構成
+# ---------------------------------------------------------------------------
+chapters:
+  - { key: front,    title: "表紙・目次",                                  pdf_pages: [1, 2],   slides: 0 }
+  - { key: kenko,    title: "日本の医療や健康の状況 − 健康・長寿の実現",     pdf_pages: [3, 9],   slides: 6 }
+  - { key: riyo,     title: "日本の医療や健康の状況 − 保健医療の利用状況",   pdf_pages: [10, 25], slides: 15 }
+  - { key: seido,    title: "日本の医療保険制度",                           pdf_pages: [26, 44], slides: 18 }
+  - { key: jinko,    title: "環境変化 − 人口構造の変化による担い手の減少",   pdf_pages: [45, 47], slides: 2 }
+  - { key: juyo,     title: "環境変化 − 医療需要の変化",                    pdf_pages: [48, 52], slides: 4 }
+  - { key: bukka,    title: "環境変化 − 物価・賃金の上昇",                  pdf_pages: [53, 56], slides: 3 }
+  - { key: iryohi,   title: "環境変化 − 医療費の動向",                      pdf_pages: [57, 60], slides: 3 }
+  - { key: hokenryo, title: "環境変化 − 保険料・所得の変化",                pdf_pages: [61, 73], slides: 12 }
+  - { key: kaikaku,  title: "これまでの医療保険制度改革",                   pdf_pages: [74, 83], slides: 9 }
+
+# ---------------------------------------------------------------------------
+# スライド索引
+#   type:      cover | toc | chapter | 現状データ | 制度概要 | 国際比較 | 経緯整理
+#   text_ok:   false = テキスト層がほぼ空。画像から読み取るしかない ★要注意
+#   third_party_figure: true = 図そのものが第三者の著作物。公開時は画像非表示
+#   origin:    他会議資料からの転載元
+# ---------------------------------------------------------------------------
+slides:
+
+  # ---- 表紙・目次 ----
+  - { pdf_page: 1, printed_page: null, type: cover, title: "基礎資料", chapter: front, text_ok: true }
+  - { pdf_page: 2, printed_page: null, type: toc,   title: "目次",     chapter: front, text_ok: true }
+
+  # ---- 健康・長寿の実現 ----
+  - { pdf_page: 3, printed_page: 2, type: chapter, title: "日本の医療や健康の状況 −健康・長寿の実現−", chapter: kenko, text_ok: true }
+  - pdf_page: 4
+    printed_page: 3
+    type: 国際比較
+    title: 主要国の65歳以上の人口割合
+    chapter: kenko
+    themes: [高齢化]
+    data_source: "UN, World Population Prospects: The 2024 Revision / 国勢調査 / 社人研 日本の将来推計人口（令和5年推計）"
+    text_ok: true
+  - pdf_page: 5
+    printed_page: 4
+    type: 国際比較
+    title: （参考）主要国の75歳以上の人口割合
+    chapter: kenko
+    themes: [高齢化]
+    data_source: "UN, World Population Prospects: The 2024 Revision"
+    text_ok: true
+  - pdf_page: 6
+    printed_page: 5
+    type: 国際比較
+    title: 平均寿命の国際比較
+    chapter: kenko
+    themes: [健康寿命]
+    data_source: "厚生労働省 簡易生命表の概況 / 国連 Demographic Yearbook"
+    text_ok: true
+  - pdf_page: 7
+    printed_page: 6
+    type: 国際比較
+    title: 平均寿命と健康寿命の国際比較
+    chapter: kenko
+    themes: [健康寿命]
+    data_source: "Global Health Observatory (GHO) data（2021年）"
+    text_ok: true
+  - pdf_page: 8
+    printed_page: 7
+    type: 現状データ
+    title: 平均寿命と健康寿命の推移
+    chapter: kenko
+    themes: [健康寿命]
+    origin: "第4回 健康日本21（第三次）推進専門委員会 令和6年12月24日 資料1-1（一部改変）"
+    text_ok: true
+  - pdf_page: 9
+    printed_page: 8
+    type: 現状データ
+    title: 生活満足度と健康状態の関係
+    chapter: kenko
+    themes: [予防・健康づくり]
+    data_source: "内閣府 満足度・生活の質に関する調査報告書2024"
+    text_ok: true
+
+  # ---- 保健医療の利用状況 ----
+  - { pdf_page: 10, printed_page: 9, type: chapter, title: "日本の医療や健康の状況 −保健医療の利用状況−", chapter: riyo, text_ok: true }
+  - pdf_page: 11
+    printed_page: 10
+    type: 制度概要
+    title: ライフサイクルで見た医療保険のサービス（イメージ）
+    chapter: riyo
+    themes: [給付]
+    terms: [療養の給付, 出産育児一時金, 出産手当金, 傷病手当金]
+    text_ok: true
+  - pdf_page: 12
+    printed_page: 11
+    type: 制度概要
+    title: ライフサイクルでみた社会保険及び保育・教育等サービスの給付と負担のイメージ
+    chapter: riyo
+    themes: [世代間負担]
+    supports_topics: [世代間の負担の公平]
+    text_ok: true
+  - pdf_page: 13
+    printed_page: 12
+    type: 現状データ
+    title: 年齢階級別1人当たり年間外来受診回数（医科・歯科、2023年度）
+    chapter: riyo
+    themes: [受診行動]
+    data_source: "厚生労働省 医療保険に関する基礎資料〜令和5年度の医療費等の状況〜"
+    supports_topics: [外来受診の適正化]
+    text_ok: true
+  - pdf_page: 14
+    printed_page: 13
+    type: 現状データ
+    title: 受診率の推移
+    chapter: riyo
+    themes: [受診行動]
+    data_source: "厚生労働省 医療保険に関する基礎資料"
+    text_ok: true
+  - pdf_page: 15
+    printed_page: 14
+    type: 現状データ
+    title: がん罹患者数と仕事を持ちながら通院している者の推移
+    chapter: riyo
+    themes: [がん・就労]
+    data_source: "国立がん研究センターがん情報サービス がん統計 / 令和4年国民生活基礎調査"
+    text_ok: true
+  - pdf_page: 16
+    printed_page: 15
+    type: 現状データ
+    title: がん患者の5年生存率
+    chapter: riyo
+    themes: [がん・就労]
+    data_source: "公益財団法人 がん研究振興財団 がんの統計2025"
+    third_party_figure: true    # ★図そのものが がん研究振興財団の著作物
+    text_ok: true
+  - pdf_page: 17
+    printed_page: 16
+    type: 制度概要
+    title: 日本の健診（検診）制度の概要
+    chapter: riyo
+    themes: [予防・健康づくり]
+    terms: [特定健康診査, 健康増進法, 労働安全衛生法, 母子保健法, 学校保健安全法]
+    text_ok: true
+  - pdf_page: 18
+    printed_page: 17
+    type: 制度概要
+    title: 医療保険者における予防・健康づくりの重要性
+    chapter: riyo
+    themes: [予防・健康づくり]
+    terms: [データヘルス, コラボヘルス]
+    text_ok: true
+  - pdf_page: 19
+    printed_page: 18
+    type: 制度概要
+    title: 特定健診・特定保健指導の概要
+    chapter: riyo
+    themes: [予防・健康づくり]
+    terms: [特定健康診査, 特定保健指導]
+    text_ok: true
+  - pdf_page: 20
+    printed_page: 19
+    type: 現状データ
+    title: 特定健診・特定保健指導の実施率の推移
+    chapter: riyo
+    themes: [予防・健康づくり]
+    note: "2029年度全国目標 特定健診70％／特定保健指導45％"
+    text_ok: true
+  - pdf_page: 21
+    printed_page: 20
+    type: 国際比較
+    title: 妊産婦死亡率・乳児死亡率の推移
+    chapter: riyo
+    themes: [出産]
+    origin: "第3回 こども家庭審議会成育医療等分科会 令和6年3月14日 資料3-2"
+    third_party_figure: true
+    text_ok: false              # ★抽出2文字。全面画像
+    number_verified: false
+  - pdf_page: 22
+    printed_page: 21
+    type: 制度概要
+    title: 出産育児一時金について
+    chapter: riyo
+    themes: [出産]
+    terms: [出産育児一時金, 産科医療補償制度, 出産育児交付金]
+    supports_topics: [出産に係る給付体系の見直し]
+    text_ok: true
+  - pdf_page: 23
+    printed_page: 22
+    type: 国際比較
+    title: 医療分野についての国際比較（2023年）
+    chapter: riyo
+    themes: [国際比較, 医療提供体制]
+    data_source: "OECD Data Explorer（2026年2月13日閲覧）"
+    text_ok: true
+  - pdf_page: 24
+    printed_page: 23
+    type: 現状データ
+    title: 医療費全体の伸びの要因 〜高齢化率との相関〜
+    chapter: riyo
+    themes: [医療費動向, 高齢化]
+    data_source: "OECD data explorer"
+    text_ok: false              # ★抽出65文字。グラフが画像
+    number_verified: false
+  - pdf_page: 25
+    printed_page: 24
+    type: 国際比較
+    title: 主要国の医療保障制度（概要）
+    chapter: riyo
+    themes: [国際比較, 患者負担]
+    data_source: "厚生労働省大臣官房国際課 2024年海外情勢報告 / 医療経済研究機構 各国調査研究報告書"
+    text_ok: false              # ★抽出44文字。大型比較表が画像。数値密度が高い
+    number_verified: false
+
+  # ---- 日本の医療保険制度 ----
+  - { pdf_page: 26, printed_page: 25, type: chapter, title: "日本の医療保険制度", chapter: seido, text_ok: true }
+  - pdf_page: 27
+    printed_page: 26
+    type: 制度概要
+    title: 医療保険制度の意義等について
+    chapter: seido
+    themes: [制度体系]
+    terms: [国民皆保険, 社会保険方式, 実効給付率]
+    text_ok: true
+  - pdf_page: 28
+    printed_page: 27
+    type: 制度概要
+    title: 医療保険制度の体系
+    chapter: seido
+    themes: [制度体系]
+    terms: [後期高齢者医療制度, 前期高齢者財政調整制度, 協会けんぽ, 健康保険組合, 共済組合]
+    text_ok: false              # ★抽出29文字。体系図が画像
+    number_verified: false
+  - pdf_page: 29
+    printed_page: 28
+    type: 現状データ
+    title: 各保険者の比較
+    chapter: seido
+    themes: [保険者財政, 世代間負担]
+    supports_topics: [高齢者負担の在り方, 保険者間の負担調整]
+    note: "保険者別の加入者数・平均年齢・一人当たり医療費・平均所得・平均保険料を一覧化。この資料で最も数値密度が高い一枚"
+    text_ok: false              # ★抽出23文字。一覧表が画像
+    number_verified: false
+  - pdf_page: 30
+    printed_page: 29
+    type: 制度概要
+    title: 保険診療の流れ
+    chapter: seido
+    themes: [制度体系]
+    terms: [審査支払機関, 一部負担金, 診療報酬]
+    text_ok: true
+  - pdf_page: 31
+    printed_page: 30
+    type: 制度概要
+    title: 診療報酬の概要
+    chapter: seido
+    themes: [診療報酬]
+    terms: [診療報酬, 中央社会保険医療協議会, 薬価基準]
+    text_ok: true
+  - pdf_page: 32
+    printed_page: 31
+    type: 制度概要
+    title: 医療費の一部負担（自己負担）割合について
+    chapter: seido
+    themes: [患者負担]
+    terms: [現役並み所得者, 一定以上所得者]
+    supports_topics: [高齢者負担の在り方]
+    text_ok: true
+  - pdf_page: 33
+    printed_page: 32
+    type: 制度概要
+    title: 高額療養費制度の概要
+    chapter: seido
+    themes: [高額療養費]
+    terms: [高額療養費, 償還払い, 現物給付化]
+    supports_topics: [高額療養費制度の見直し]
+    text_ok: true
+  - pdf_page: 34
+    printed_page: 33
+    type: 制度概要
+    title: 70歳以上の所得区分ごとの窓口負担割合・高額療養費（令和8年8月〜令和9年7月）
+    chapter: seido
+    themes: [高額療養費, 患者負担]
+    terms: [外来特例, 多数回該当, 一般Ⅱ, 低所得Ⅱ]
+    supports_topics: [高額療養費制度の見直し, 外来特例の見直し]
+    note: "令和8年8月からの自己負担限度額と年間上限が入っている。改正内容を確認する上での基準スライド"
+    text_ok: true
+  - pdf_page: 35
+    printed_page: 34
+    type: 現状データ
+    title: 年齢階級別一人当たり医療費と自己負担額（令和5年度）
+    chapter: seido
+    themes: [患者負担, 世代間負担]
+    supports_topics: [高齢者負担の在り方]
+    note: "「70代以降は医療費が高額になるにもかかわらず自己負担は低く抑えられている」を太字下線で強調。負担引上げ論の直接の論拠"
+    text_ok: true
+  - pdf_page: 36
+    printed_page: 35
+    type: 現状データ
+    title: 入院の医療費階級別レセプト件数の割合
+    chapter: seido
+    themes: [高額療養費, 世代間負担]
+    data_source: "厚生労働省 令和5年度 医療給付実態調査報告"
+    supports_topics: [高額療養費制度の見直し]
+    text_ok: true
+  - pdf_page: 37
+    printed_page: 36
+    type: 制度概要
+    title: 先進医療を経て保険収載された医療技術
+    chapter: seido
+    themes: [保険収載]
+    terms: [先進医療, 評価療養, 保険外併用療養費]
+    text_ok: true
+  - pdf_page: 38
+    printed_page: 37
+    type: 現状データ
+    title: 高額薬剤の保険収載
+    chapter: seido
+    themes: [薬剤費・薬価]
+    note: "薬価上位5品目（令和8年5月20日時点）"
+    text_ok: true
+  - pdf_page: 39
+    printed_page: 38
+    type: 制度概要
+    title: 市場拡大再算定
+    chapter: seido
+    themes: [薬剤費・薬価]
+    terms: [市場拡大再算定, 持続可能性特例価格調整, 四半期再算定]
+    text_ok: true
+  - pdf_page: 40
+    printed_page: 39
+    type: 現状データ
+    title: 協会けんぽの財政構造（令和6年度決算）
+    chapter: seido
+    themes: [保険者財政]
+    supports_topics: [現役世代の負担軽減]
+    text_ok: true
+  - pdf_page: 41
+    printed_page: 40
+    type: 現状データ
+    title: 健康保険組合の財政構造（令和6年度決算見込）
+    chapter: seido
+    themes: [保険者財政]
+    supports_topics: [現役世代の負担軽減]
+    text_ok: true
+  - pdf_page: 42
+    printed_page: 41
+    type: 現状データ
+    title: 国民健康保険制度の財政の概要（令和9年度概算要求ベース）
+    chapter: seido
+    themes: [保険者財政, 国保改革]
+    terms: [保険者努力支援制度, 財政安定化支援事業, 前期高齢者交付金, 保険者支援制度]
+    text_ok: true
+  - pdf_page: 43
+    printed_page: 42
+    type: 現状データ
+    title: 後期高齢者医療制度の財政の概要（令和8年度予算ベース）
+    chapter: seido
+    themes: [保険者財政, 高齢者医療]
+    terms: [後期高齢者支援金, 財政安定化基金, 特別高額医療費共同事業]
+    text_ok: true
+  - pdf_page: 44
+    printed_page: 43
+    type: 現状データ
+    title: 制度別の財政の概要（令和5年度）
+    chapter: seido
+    themes: [保険者財政, 世代間負担]
+    terms: [前期調整額, 後期支援金]
+    supports_topics: [保険者間の負担調整]
+    text_ok: true
+
+  # ---- 人口構造の変化による担い手の減少 ----
+  - { pdf_page: 45, printed_page: 44, type: chapter, title: "医療保険制度が直面する環境変化 −人口構造の変化による担い手の減少−", chapter: jinko, text_ok: true }
+  - pdf_page: 46
+    printed_page: 45
+    type: 現状データ
+    title: マンパワー① 2025年以降、人材確保がますます課題となる
+    chapter: jinko
+    themes: [人材確保]
+    origin: "省力化投資促進プラン―医療―（抜粋）/ 令和6年3月29日 新たな地域医療構想等に関する検討会資料 / 令和4年3月4日 第8次医療計画等に関する検討会 資料1"
+    text_ok: true
+  - pdf_page: 47
+    printed_page: 46
+    type: 現状データ
+    title: 状況の変化（人口構造の変化（支え手の減少））
+    chapter: jinko
+    themes: [人材確保, 高齢化]
+    origin: "省力化投資促進プラン―医療―（抜粋）"
+    text_ok: true
+
+  # ---- 医療需要の変化 ----
+  - { pdf_page: 48, printed_page: 47, type: chapter, title: "医療保険制度が直面する環境変化 −医療需要の変化−", chapter: juyo, text_ok: true }
+  - pdf_page: 49
+    printed_page: 48
+    type: 現状データ
+    title: 医療需要の変化① 入院患者数は、全体としては増加傾向にある
+    chapter: juyo
+    themes: [医療提供体制]
+    origin: "令和4年3月4日 第7回 第8次医療計画等に関する検討会 資料1（一部改）"
+    text_ok: true
+  - pdf_page: 50
+    printed_page: 49
+    type: 現状データ
+    title: 医療需要の変化② 外来患者数は、既に減少局面にある医療圏が多い
+    chapter: juyo
+    themes: [医療提供体制]
+    origin: "令和6年3月29日 新たな地域医療構想等に関する検討会資料（一部修正）/ 令和6年8月26日 第7回同検討会資料"
+    text_ok: true
+  - pdf_page: 51
+    printed_page: 50
+    type: 現状データ
+    title: 医療需要の変化③ 在宅患者数は、多くの地域で今後増加する
+    chapter: juyo
+    themes: [医療提供体制, 在宅医療]
+    origin: "令和6年3月29日 第1回 新たな地域医療構想等に関する検討会資料"
+    text_ok: true
+  - pdf_page: 52
+    printed_page: 51
+    type: 現状データ
+    title: 訪問看護の必要量について
+    chapter: juyo
+    themes: [在宅医療]
+    origin: "第4回 在宅医療及び医療・介護連携に関するワーキンググループ 令和4年7月20日 資料（改）"
+    text_ok: true
+
+  # ---- 物価・賃金の上昇 ----
+  - { pdf_page: 53, printed_page: 52, type: chapter, title: "医療保険制度が直面する環境変化 −物価・賃金の上昇−", chapter: bukka, text_ok: true }
+  - pdf_page: 54
+    printed_page: 53
+    type: 現状データ
+    title: 消費者物価指数の長期トレンド
+    chapter: bukka
+    themes: [物価・賃金]
+    data_source: "労働政策研究・研修機構 早わかり グラフでみる長期労働統計"
+    third_party_figure: true    # ★JILPTの図をそのまま掲載
+    supports_topics: [経済情勢に対応した患者負担等の見直し]
+    text_ok: true
+  - pdf_page: 55
+    printed_page: 54
+    type: 現状データ
+    title: 賃金の長期トレンド
+    chapter: bukka
+    themes: [物価・賃金]
+    data_source: "労働政策研究・研修機構 早わかり グラフでみる長期労働統計"
+    third_party_figure: true    # ★JILPTの図をそのまま掲載
+    text_ok: true
+  - pdf_page: 56
+    printed_page: 55
+    type: 現状データ
+    title: 医療関係職種の給与の推移について
+    chapter: bukka
+    themes: [物価・賃金, 人材確保]
+    data_source: "厚生労働省 賃金構造基本統計調査（保険局医療課作成）"
+    text_ok: true
+
+  # ---- 医療費の動向 ----
+  - { pdf_page: 57, printed_page: 56, type: chapter, title: "医療保険制度が直面する環境変化 −医療費の動向−", chapter: iryohi, text_ok: true }
+  - pdf_page: 58
+    printed_page: 57
+    type: 現状データ
+    title: 医療費の動向
+    chapter: iryohi
+    themes: [医療費動向, 改革経緯]
+    supports_topics: [医療費適正化]
+    note: "国民医療費と後期高齢者医療費の推移に、主な制度改正と診療報酬改定率を重ねた一枚。この資料の中核チャート"
+    text_ok: false              # ★抽出20文字。全面画像。数値密度が高い
+    number_verified: false
+  - pdf_page: 59
+    printed_page: 58
+    type: 現状データ
+    title: 医療費の伸び率の要因分解
+    chapter: iryohi
+    themes: [医療費動向]
+    note: "H23〜R6の14年分×5指標の数表。人口増・高齢化・診療報酬改定・その他への分解"
+    text_ok: false              # ★抽出38文字。大型数表が画像
+    number_verified: false
+  - pdf_page: 60
+    printed_page: 59
+    type: 現状データ
+    title: 国民医療費、薬剤費等の推移
+    chapter: iryohi
+    themes: [薬剤費・薬価, 医療費動向]
+    origin: "中央社会保険医療協議会 薬-4 令和8年7月8日"
+    text_ok: true
+
+  # ---- 保険料・所得の変化 ----
+  - { pdf_page: 61, printed_page: 60, type: chapter, title: "医療保険制度が直面する環境変化 −保険料・所得の変化−", chapter: hokenryo, text_ok: true }
+  - pdf_page: 62
+    printed_page: 61
+    type: 現状データ
+    title: 協会けんぽ・健保組合の保険料率の推移
+    chapter: hokenryo
+    themes: [保険料負担]
+    supports_topics: [現役世代の負担軽減]
+    text_ok: true
+  - pdf_page: 63
+    printed_page: 62
+    type: 現状データ
+    title: 協会けんぽと健康保険組合の平均総報酬額の推移（平成20年度以降）
+    chapter: hokenryo
+    themes: [保険料負担]
+    data_source: "健康保険・船員保険被保険者実態調査"
+    text_ok: true
+  - pdf_page: 64
+    printed_page: 63
+    type: 現状データ
+    title: 国民健康保険料（税）の負担の変化
+    chapter: hokenryo
+    themes: [保険料負担, 国保改革]
+    data_source: "令和6年度 国民健康保険実態調査報告"
+    text_ok: true
+  - pdf_page: 65
+    printed_page: 64
+    type: 現状データ
+    title: 国民健康保険の被保険者一人当たり所得額の推移（平成20年度以降）
+    chapter: hokenryo
+    themes: [保険料負担, 国保改革]
+    data_source: "厚生労働省 国民健康保険実態調査"
+    text_ok: true
+  - pdf_page: 66
+    printed_page: 65
+    type: 現状データ
+    title: 後期高齢者1人当たり保険料、現役1人当たり支援金の推移
+    chapter: hokenryo
+    themes: [保険料負担, 世代間負担]
+    supports_topics: [高齢者負担率の見直し, 現役世代の負担軽減]
+    note: "平成20年度を100とした指数を併記。令和6年度改革で両者の伸び率を揃える仕組みが入った経緯を読む上での基準スライド"
+    text_ok: true
+  - pdf_page: 67
+    printed_page: 66
+    type: 現状データ
+    title: 後期高齢者医療制度の被保険者1人当たり所得額の推移（平成20年度以降）
+    chapter: hokenryo
+    themes: [高齢者所得]
+    data_source: "厚生労働省 後期高齢者医療制度被保険者実態調査"
+    text_ok: true
+  - pdf_page: 68
+    printed_page: 67
+    type: 現状データ
+    title: 高齢者医療への拠出負担の推移（健保組合）
+    chapter: hokenryo
+    themes: [保険者財政, 世代間負担]
+    supports_topics: [現役世代の負担軽減]
+    text_ok: true
+  - pdf_page: 69
+    printed_page: 68
+    type: 現状データ
+    title: 高齢者医療への拠出負担の推移（協会けんぽ）
+    chapter: hokenryo
+    themes: [保険者財政, 世代間負担]
+    supports_topics: [現役世代の負担軽減]
+    text_ok: true
+  - pdf_page: 70
+    printed_page: 69
+    type: 現状データ
+    title: 家計の金融資産
+    chapter: hokenryo
+    themes: [金融所得]
+    data_source: "日本銀行 資金循環"
+    supports_topics: [医療保険における金融所得の勘案]
+    text_ok: true
+  - pdf_page: 71
+    printed_page: 70
+    type: 現状データ
+    title: 高齢者の受診・所得の状況
+    chapter: hokenryo
+    themes: [受診行動, 高齢者所得]
+    supports_topics: [高齢者負担の在り方]
+    note: "75歳以上個人の収入額分布（平均175万円／中央値137万円）を含む。平均と中央値の乖離が論点になる"
+    text_ok: true
+  - pdf_page: 72
+    printed_page: 71
+    type: 現状データ
+    title: 後期高齢者の所得等の状況（2008年度と2025年度の比較）
+    chapter: hokenryo
+    themes: [高齢者所得]
+    data_source: "厚生労働省 後期高齢者医療制度被保険者実態調査"
+    supports_topics: [高齢者負担の在り方, 医療保険における金融所得の勘案]
+    text_ok: true
+  - pdf_page: 73
+    printed_page: 72
+    type: 現状データ
+    title: 高齢者の就業率の推移（平成20年以降）
+    chapter: hokenryo
+    themes: [高齢者所得]
+    data_source: "総務省統計局 労働力調査"
+    supports_topics: [高齢者負担の在り方]
+    text_ok: true
+
+  # ---- これまでの医療保険制度改革 ----
+  - { pdf_page: 74, printed_page: 73, type: chapter, title: "これまでの医療保険制度改革", chapter: kaikaku, text_ok: true }
+  - pdf_page: 75
+    printed_page: 74
+    type: 経緯整理
+    title: 社会保障関係費の伸び
+    chapter: kaikaku
+    themes: [改革経緯, 財政]
+    origin: "財政制度等審議会 財政制度分科会資料"
+    priority: 1                 # ★最初に処理する。年表の材料
+    text_ok: true
+  - pdf_page: 76
+    printed_page: 75
+    type: 経緯整理
+    title: 医療保険制度改革の経過について
+    chapter: kaikaku
+    themes: [改革経緯]
+    priority: 1                 # ★最初に処理する。年表の材料（平成20年度〜令和8年度）
+    note: "令和8年度欄に一部保険外療養の創設・金融所得の勘案・出産給付体系の見直し・高額療養費の法律上の明確化が記載"
+    text_ok: true
+  - pdf_page: 77
+    printed_page: 76
+    type: 経緯整理
+    title: 医療保険制度の患者一部負担の推移
+    chapter: kaikaku
+    themes: [患者負担, 改革経緯]
+    priority: 1                 # ★最初に処理する。年表の材料（昭和47年〜令和4年）
+    text_ok: true
+  - pdf_page: 78
+    printed_page: 77
+    type: 制度概要
+    title: 医療費適正化計画（概要）について
+    chapter: kaikaku
+    themes: [医療費適正化]
+    terms: [医療費適正化計画, 高齢者の医療の確保に関する法律]
+    text_ok: true
+  - pdf_page: 79
+    printed_page: 78
+    type: 現状データ
+    title: 国民健康保険における保険料水準の統一に関する進捗状況
+    chapter: kaikaku
+    themes: [国保改革]
+    terms: [保険料水準統一加速化プラン, 納付金ベースの統一]
+    text_ok: true
+  - pdf_page: 80
+    printed_page: 79
+    type: 現状データ
+    title: 国保保険者（市町村）による予防・健康づくり、保険料収納の取組
+    chapter: kaikaku
+    themes: [国保改革, 予防・健康づくり]
+    terms: [保険者努力支援制度]
+    text_ok: true
+  - pdf_page: 81
+    printed_page: 80
+    type: 現状データ
+    title: 薬価調査における後発医薬品の使用割合（数量ベース）
+    chapter: kaikaku
+    themes: [後発医薬品, 薬剤費・薬価]
+    supports_topics: [OTC類似薬の保険給付の見直し]
+    text_ok: true
+  - pdf_page: 82
+    printed_page: 81
+    type: 経緯整理
+    title: 健康保険法等の一部を改正する法律（令和8年法律第31号）の概要
+    chapter: kaikaku
+    themes: [法改正]
+    priority: 1                 # ★最初に処理する。現在地を確定させる一枚
+    note: "令和8年6月5日公布。一部保険外療養の創設、金融所得の勘案、出産給付体系の見直し、子ども均等割軽減の高校生年代までの拡充など"
+    supports_topics: [OTC類似薬の保険給付の見直し, 医療保険における金融所得の勘案, 出産に係る給付体系の見直し, 高額療養費制度の見直し]
+    text_ok: true
+  - pdf_page: 83
+    printed_page: 82
+    type: 経緯整理
+    title: 全世代型社会保障構築を目指す改革の道筋（改革工程）の概要
+    chapter: kaikaku
+    themes: [改革経緯]
+    priority: 1                 # ★最初に処理する。今後の論点の一覧そのもの
+    note: "令和5年12月22日閣議決定。2028年度までに検討する取組の一覧は今後の部会の議題そのもの。kb/topics.yaml の初期データはここから起こす"
+    text_ok: true
+
+# ---------------------------------------------------------------------------
+# 処理上の注意
+# ---------------------------------------------------------------------------
+notes:
+  text_not_extractable:
+    description: "図表が画像として貼られており pdftotext がほぼ空を返すページ。数値は画像から読み取るしかなく、誤記リスクが最も高い"
+    pdf_pages: [21, 24, 25, 28, 29, 58, 59]
+    rule: "解説生成時は専用プロンプトを使い、全数値に【要確認】を付す。人が原典と突合するまで number_verified: false を維持する"
+
+  third_party_figures:
+    description: "厚労省が作図したものではなく、他所の図がそのまま貼られているページ。公共データ利用規約は第三者著作物に及ばない"
+    pdf_pages: [16, 21, 54, 55]
+    rule: "ビューアでは画像を表示せず出典リンクに差し替える。解説本文は通常どおり作成する"
+
+  first_batch:
+    description: "priority: 1 の5枚を最初に処理する。改革の経緯・患者負担の変遷・現行法・改革工程がここに集中しており、これを固めないと他67枚の政策背景が書けない"
+    pdf_pages: [75, 76, 77, 82, 83]

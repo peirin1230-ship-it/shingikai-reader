@@ -1,0 +1,70 @@
+shingikai-reader のライセンス
+===============================================================================
+
+このリポジトリには、権利者の異なる3種類のものが混在している。混同を避けるため、
+対象ごとにライセンスを分けて示す。
+
+-------------------------------------------------------------------------------
+1. 解説本文・横断ナレッジベース  →  CC BY 4.0
+-------------------------------------------------------------------------------
+対象: councils/**/*.md の解説本文、kb/ 以下の記述、docs/ 以下の文書
+
+    Creative Commons Attribution 4.0 International (CC BY 4.0)
+    https://creativecommons.org/licenses/by/4.0/
+    法的条文: https://creativecommons.org/licenses/by/4.0/legalcode.ja
+
+出典を明記すれば、複製・改変・再配布・商用利用ができる。
+
+ただし、これらのファイルに引用されている審議会資料の文言・数値そのものは
+下記3の扱いであり、CC BY 4.0 の対象ではない。
+
+-------------------------------------------------------------------------------
+2. スクリプト・ワークフロー  →  MIT License
+-------------------------------------------------------------------------------
+対象: build/ 以下、.github/ 以下、Makefile
+
+Copyright (c) 2026 shingikai-reader contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-------------------------------------------------------------------------------
+3. 審議会資料そのもの  →  本リポジトリのライセンス対象外
+-------------------------------------------------------------------------------
+対象: 原典PDF（source/。リポジトリには含めない）、そこから生成したスライド画像
+      （images/。リポジトリには含めない）、解説中に引用した資料の文言・数値
+
+厚生労働省ウェブサイトのコンテンツであり、「公共データ利用規約（第1.0版）」に
+準拠する。出典を明記すれば複製・公衆送信・翻案ができるが、次の条件が付く。
+
+  - 編集・加工した場合は、その旨を記載すること
+  - 国が作成したかのような態様で公表しないこと
+
+本リポジトリはこの条件に従い、README とビューアのフッタに出典と
+「厚生労働省が作成・公認したものではない」旨を明記している。
+
+★ 公共データ利用規約は、第三者が権利を持つコンテンツには適用されない。
+   本資料に含まれる第三者著作物（がん研究振興財団、労働政策研究・研修機構 ほか）は
+   README の「第三者著作物」節に一覧があり、third_party_figure: true を立てて
+   ビューアでの画像表示を抑止している。
+
+-------------------------------------------------------------------------------
+無保証
+-------------------------------------------------------------------------------
+解説の正確性は保証しない。一次情報は必ず原典にあたること。
+number_verified: false のスライドは、数値が人の目で照合されていない。
