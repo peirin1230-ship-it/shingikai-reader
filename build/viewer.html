@@ -79,6 +79,15 @@ ul,ol{padding-left:1.4em}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
 .card h3{margin-top:0}
 .status{font-size:12px;color:var(--muted)}
+.pager{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.pager.bottom{margin-top:28px;padding-top:14px;border-top:1px solid var(--line)}
+.pager .btn{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--line);border-radius:6px;
+  background:var(--panel);color:var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.pager .btn:hover{background:var(--accent-soft);border-color:var(--accent)}
+.pager .btn .n{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.pager .btn.disabled{opacity:.4;cursor:default;pointer-events:none}
+.pager .pos{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 auto}
+.pager .hint{font-size:11px;color:var(--muted)}
 .tl{border-left:2px solid var(--line);margin-left:8px;padding-left:18px}
 .tl .ev{position:relative;margin:0 0 18px}
 .tl .ev::before{content:"";position:absolute;left:-25px;top:7px;width:9px;height:9px;
@@ -173,9 +182,30 @@ function renderList(){
   if (cur) cur.scrollIntoView({block:"nearest"});
 }
 
+const pad = n => String(n).padStart(3, "0");
+function neighbors(s){
+  const items = visible();
+  const i = items.findIndex(x => x.id === s.id);
+  return {i, n: items.length,
+          prev: i > 0 ? items[i - 1] : null,
+          next: i >= 0 && i < items.length - 1 ? items[i + 1] : null};
+}
+function pagerHtml(s, where){
+  const {i, n, prev, next} = neighbors(s);
+  const btn = (t, label, arrow) => t
+    ? `<a class="btn" href="#/s/${t.id}" title="${esc(t.title)}">${arrow === "l" ? "←" : ""} ${label}
+       <span class="n">p${pad(t.pdf_page)}</span> ${arrow === "r" ? "→" : ""}</a>`
+    : `<span class="btn disabled">${arrow === "l" ? "← " : ""}${label}${arrow === "r" ? " →" : ""}</span>`;
+  return `<nav class="pager ${where}" aria-label="スライドの移動">
+    ${btn(prev, "前へ", "l")}
+    <span class="pos">${i >= 0 ? `${i + 1} / ${n}` : "絞り込みの外"}</span>
+    ${where === "top" ? `<span class="hint">← → キーでも移動</span>` : ""}
+    ${btn(next, "次へ", "r")}</nav>`;
+}
+
 function slideView(s){
   const meeting = DATA.meetings.find(m => m.council === s.council && m.meeting === s.meeting) || {};
-  let h = `<div class="slidehead">
+  let h = pagerHtml(s, "top") + `<div class="slidehead">
       <span class="page">p${String(s.pdf_page).padStart(3,"0")} / ${s.document_pages ?? meeting.pdf_pages ?? "?"}
       ${s.printed_page != null ? `・スライド${s.printed_page}` : ""}</span>
       <h2>${esc(s.title)}</h2></div>
@@ -214,6 +244,7 @@ function slideView(s){
     if (s.origin) h += `<div class="card"><h3>転載元</h3><p>${esc(s.origin)}</p></div>`;
     if (s.data_source) h += `<div class="card"><h3>出典</h3><p>${esc(s.data_source)}</p></div>`;
   }
+  h += pagerHtml(s, "bottom");
   return h;
 }
 
@@ -243,7 +274,7 @@ function timelineView(){
     <p class="status">初期データはスライド75・76・77・82・83から起こした。
     「この年表に載っているのは基礎資料に載っている改正だけ」である点に注意。</p>
     <div class="tl">` + rows.map(e => `<div class="ev">
-      <div class="d">${esc(e.era ?? e.date)}${e.law ? ` ・ ${esc(e.law)}` : ""}
+      <div class="d">${esc(e.date)}${e.law ? ` ・ ${esc(e.law)}` : ""}
         ${e.confidence === "medium" ? " ・ confidence: medium" : ""}</div>
       <div class="ti">${esc(e.title)}</div>
       ${e.summary ? `<div>${esc(e.summary)}</div>` : ""}
@@ -291,7 +322,7 @@ function aboutView(){
     <h3>参照した文書</h3>
     ${DATA.documents.map(d => `<div class="card">
       <h3>${esc(d.title)}${d.law_number ? `（${esc(d.law_number)}）` : ""}</h3>
-      <p class="status">${esc(d.type)}${d.era ? ` ・ ${esc(d.era)}` : ""}${
+      <p class="status">${esc(d.type)}${d.date ? ` ・ ${esc(d.date)}` : ""}${
         d.subtitle ? `<br>${esc(d.subtitle)}` : ""}</p>
       ${d.summary ? `<p>${esc(d.summary).replace(/\n/g, "<br>")}</p>` : ""}
       <p><a href="${esc(d.url)}">${esc(d.url)}</a></p>
@@ -391,6 +422,15 @@ fetch("data.json").then(r => r.json()).then(data => {
   document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
     view = b.dataset.view; syncTabs(); render(); });
   $("#zoom").onclick = () => $("#zoom").close();
+  addEventListener("keydown", e => {
+    if (view !== "slides" || $("#zoom").open || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement?.tagName)) return;
+    const s = current ? slideById(current) : visible()[0];
+    if (!s) return;
+    const {prev, next} = neighbors(s);
+    if (e.key === "ArrowRight" && next){ location.hash = `#/s/${next.id}`; e.preventDefault(); }
+    if (e.key === "ArrowLeft" && prev){ location.hash = `#/s/${prev.id}`; e.preventDefault(); }
+  });
   addEventListener("hashchange", route);
   route();
 }).catch(err => {

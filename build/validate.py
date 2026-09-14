@@ -19,6 +19,8 @@
       原典の誤記をそのまま引用する行は【原典ママ】を付けて除外する）
   8. --check-meetings を付けたときは、meetings.yaml を会議体の資料一覧ページ（index_url）と再照合
   9. kb/documents.yaml の PDF に sha256 が付いているか
+ 10. 本文の年月が西暦になっているか（和暦が残っていれば WARN。原典の引用は
+     引用ブロック・「」・【原典ママ】・title/quote などの原典フィールドで示す）
 
 ERROR があれば終了コード1。WARN は0のまま返す（CIのマージ条件はERRORのみ）。
 """
@@ -72,6 +74,86 @@ SOURCE_ASIS = "【原典ママ】"
 DATE_NOT_MEETING = ("時点", "現在", "閲覧", "取得", "確認", "実施", "公布", "施行", "閣議決定")
 MEETINGS: dict[str, dict] = {}
 
+# ---- 年月の表記（西暦に統一。和暦が本文に残っていれば WARN）----
+ERA_FULL = {"明治": 1867, "大正": 1911, "昭和": 1925, "平成": 1988, "令和": 2018}
+ERA_ABBR = {"M": 1867, "T": 1911, "S": 1925, "H": 1988, "R": 2018}
+_ERA = "(?P<era>明治|大正|昭和|平成|令和)"
+ERA_DATE = re.compile(_ERA + r"\s*(?P<y>[0-9０-９]{1,2}|元)\s*年(?P<do>度)?"
+                      r"(?:\s*(?P<m>[0-9０-９]{1,2})\s*月(?:\s*(?P<d>[0-9０-９]{1,2})\s*日)?)?")
+# 「令和元〜6年度」「平成26・29・30年度」のような列挙
+ERA_RANGE = re.compile(_ERA + r"\s*(?P<ys>(?:[0-9０-９]{1,2}|元)(?:\s*[・〜～、]\s*(?:[0-9０-９]{1,2}|元))+)\s*年(?P<do>度)?")
+# 「H26.4」「S48〜」「R6年度」「H30・R2・R4は」のような略記
+ERA_SHORT = re.compile(r"(?<![A-Za-z0-9])(?P<e>[MTSHR])(?P<y>\d{1,2})(?=年|\.\d|[〜～・、/]|から|まで|は|に|以降|時点)")
+# 表のセルや「平成29〜2020年度」のように、年が付かない和暦の取りこぼしを拾う
+ERA_BARE = re.compile(_ERA + r"\s*(?:[0-9０-９]{1,2}|元)")
+# 法律番号などの固有名は和暦のまま。変換も警告もしない
+LAW_NUM = re.compile(_ERA + r"\s*[0-9０-９元一二三四五六七八九十]{1,3}\s*年\s*"
+                     r"(?:法律|政令|省令|勅令|厚生労働省令|内閣府令|条約)第\s*[0-9０-９一二三四五六七八九十百]+\s*号")
+# 行の中で原典どおりに残す範囲: 「」の中、コード、Markdownリンク、URL、法律番号
+PROTECT_RES = [LAW_NUM, re.compile(r"「[^「」]*」"), re.compile(r"`[^`]*`"),
+               re.compile(r"\[[^\]]*\]\([^)]*\)"), re.compile(r"https?://\S+")]
+# 原典の文言をそのまま持つフィールド。この行（ブロックなら配下も）は触らない
+VERBATIM_KEYS = {"title", "era", "law_number", "law", "quote", "data_source", "origin_note",
+                 "subtitle", "term", "reading", "aliases", "betsushi", "id", "key"}
+YAML_KEY = re.compile(r"^(?P<indent>\s*)(?:-\s+)?(?:\{\s*)?(?P<key>[A-Za-z_][\w-]*)\s*:(?P<rest>.*)$")
+
+
+def protected_spans(line: str) -> list[tuple[int, int]]:
+    spans = []
+    for rx in PROTECT_RES:
+        spans += [(m.start(), m.end()) for m in rx.finditer(line)]
+    return spans
+
+
+def prose_lines(text: str):
+    """(行番号, 行, 本文か) を返す。引用ブロック・【原典ママ】・出所表示・原典フィールドは本文でない。"""
+    skip_indent: int | None = None
+    for n, line in enumerate(text.splitlines(), 1):
+        if skip_indent is not None:
+            if not line.strip() or len(line) - len(line.lstrip()) > skip_indent:
+                yield n, line, False
+                continue
+            skip_indent = None
+        prose = True
+        st = line.lstrip()
+        if st.startswith(">") or SOURCE_ASIS in line or st.startswith("- 原典中の出所表示"):
+            prose = False
+        else:
+            m = YAML_KEY.match(line)
+            if m and m.group("key") in VERBATIM_KEYS:
+                prose = False
+                rest = m.group("rest").strip()
+                if rest in ("", "|", ">", "|-", ">-", "|+", ">+"):
+                    skip_indent = len(m.group("indent"))
+        yield n, line, prose
+
+
+def era_hits(line: str) -> list[re.Match]:
+    """本文行のうち、原典どおりに残す範囲の外にある和暦。"""
+    spans = protected_spans(line)
+    out = []
+    for rx in (ERA_RANGE, ERA_DATE, ERA_SHORT, ERA_BARE):
+        for m in rx.finditer(line):
+            if not any(a <= m.start() < b for a, b in spans) \
+                    and not any(o.start() == m.start() for o in out):
+                out.append(m)
+    return out
+
+
+def check_era_notation(rep: Report) -> None:
+    files = [p for p in list(ROOT.glob("councils/**/*.md")) + list(ROOT.glob("councils/**/_meta*.yaml"))
+             + list(ROOT.glob("kb/**/*.md")) + list(ROOT.glob("kb/*.yaml"))
+             + list(ROOT.glob("docs/*.md")) + [ROOT / "README.md"] if p.is_file()]
+    for path in sorted(files):
+        rel = path.relative_to(ROOT)
+        for n, line, prose in prose_lines(path.read_text(encoding="utf-8", errors="replace")):
+            if not prose:
+                continue
+            hits = era_hits(line)
+            if hits:
+                rep.warn(f"{rel}:{n}", "本文に和暦が残っている（西暦に統一する。原典の引用は「」か引用ブロックか【原典ママ】で示す）: "
+                                       + " / ".join(h.group(0) for h in hits[:4]))
+
 # 数値突合から除くもの。転記した数値ではないため
 NUMBER_SKIP_PATTERNS = [
     r"https?://\S+",                 # URL
@@ -84,6 +166,7 @@ NUMBER_SKIP_PATTERNS = [
     r"第\s*\d+\s*回",                # 審議会の回次
     r"注\s*\d+",                     # 他文書の脚注番号（骨太の注126 など）
     r"令和\d+年法律第\d+号",           # 法律番号
+    r"(?:18|19|20)\d{2}年",           # 西暦の年（年月の表記であって転記した統計値ではない）
     r"[\u2460-\u2473]",             # ①②… NFKC正規化で 1 2 になり、2①② が 212 に化ける
     r"\bdpi\b|\bpx\b",
 ]
@@ -492,6 +575,7 @@ def main(argv: list[str] | None = None) -> int:
     MEETINGS = load_meetings()
     topics, glossary = check_kb(rep)
     check_meeting_refs(rep)
+    check_era_notation(rep)
 
     pattern = f"{args.council or '*'}/{args.meeting or '*'}/_meta.yaml"
     for meta_path in sorted(COUNCILS.glob(pattern)):
