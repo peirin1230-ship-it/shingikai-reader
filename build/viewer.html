@@ -283,10 +283,25 @@ function aboutView(){
     <h3>参照した文書</h3>
     ${DATA.documents.map(d => `<div class="card">
       <h3>${esc(d.title)}${d.law_number ? `（${esc(d.law_number)}）` : ""}</h3>
-      <p class="status">${esc(d.type)}${d.era ? ` ・ ${esc(d.era)}` : ""}</p>
+      <p class="status">${esc(d.type)}${d.era ? ` ・ ${esc(d.era)}` : ""}${
+        d.subtitle ? `<br>${esc(d.subtitle)}` : ""}</p>
       ${d.summary ? `<p>${esc(d.summary).replace(/\n/g, "<br>")}</p>` : ""}
       <p><a href="${esc(d.url)}">${esc(d.url)}</a></p>
       ${d.url_note ? `<p class="status">${esc(d.url_note).replace(/\n/g, "<br>")}</p>` : ""}
+      ${d.sha256 ? `<p class="status">SHA256 <code>${esc(d.sha256)}</code>${
+        d.pages ? ` ・ ${esc(d.pages)}ページ` : ""}${d.fetched_at ? ` ・ 取得 ${esc(d.fetched_at)}` : ""}</p>` : ""}
+      ${d.related_urls?.length ? `<p class="status">関連: ${d.related_urls.map(r =>
+        `<a href="${esc(r.url)}">${esc(r.title)}</a>`).join(" ／ ")}</p>` : ""}
+      ${d.key_points?.length ? `<h4>医療保険部会に効く記述</h4>${d.key_points.map(k => `
+        <blockquote><div class="status">→ ${esc(k.topic)}</div>
+          <p>${esc(k.quote).replace(/\n/g, " ").trim()}</p>
+          ${k.note ? `<p class="status">${esc(k.note).replace(/\n/g, "<br>")}</p>` : ""}
+        </blockquote>`).join("")}` : ""}
+      ${d.references?.length ? `<h4>この文書が根拠として挙げているもの</h4><ul>${
+        d.references.map(r => `<li>${esc(r.title)}${r.date ? `（${esc(r.date)}）` : ""}${
+          r.issuer ? ` — ${esc(r.issuer)}` : ""}${
+          r.acquired === false ? ' <span class="status">※本リポジトリ未取得</span>' : ""}</li>`).join("")}</ul>` : ""}
+      ${d.slides?.length ? `<p class="status">関連スライド: ${d.slides.map(ref).join(" ／ ")}</p>` : ""}
     </div>`).join("")}
     <h3>読むときの注意</h3>
     <div class="card">
