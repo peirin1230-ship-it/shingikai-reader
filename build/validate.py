@@ -121,7 +121,8 @@ def body_numbers(body: str) -> set[str]:
 
 
 def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[str],
-                pages_json: dict, rep: Report, doc_key: str = "sanko") -> None:
+                pages_json: dict, rep: Report, doc_key: str = "sanko",
+                indexes: dict | None = None) -> None:
     where = str(path.relative_to(ROOT))
     fm, body = split_frontmatter(path.read_text(encoding="utf-8"))
     if fm is None:
@@ -222,6 +223,11 @@ def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[
         m = re.fullmatch(r"p(\d{3})\.md", link.strip())
         if m and int(m.group(1)) in meta_by_page:
             rep.warn(where, f"リンク先の解説が未作成（索引にはある）: {link}")
+            continue
+        # 同じ回の別資料へのリンク（../{資料}/pNNN.md）
+        m2 = re.fullmatch(r"\.\./([\w\-]+)/p(\d{3})\.md", link.strip())
+        if m2 and (indexes or {}).get(m2.group(1), {}).get(int(m2.group(2))):
+            rep.warn(where, f"リンク先の解説が未作成（別資料の索引にはある）: {link}")
             continue
         rep.error(where, f"リンク先がない: {link}")
 
@@ -345,7 +351,8 @@ def main(argv: list[str] | None = None) -> int:
             if pj.exists():
                 pages_json = {p["pdf_page"]: p
                               for p in json.loads(pj.read_text(encoding="utf-8"))["pages"]}
-            check_slide(slide_path, indexes[doc_key], topics, glossary, pages_json, rep, doc_key)
+            check_slide(slide_path, indexes[doc_key], topics, glossary,
+                        pages_json, rep, doc_key, indexes)
 
     if args.check_urls:
         print("URLの死活:")

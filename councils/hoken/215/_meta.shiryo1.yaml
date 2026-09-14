@@ -46,7 +46,7 @@ slides:
     number_verified: false
 
   - pdf_page: 3
-    printed_page: null
+    printed_page: 2
     type: 論点提示
     title: 患者団体ヒアリング（令和8年9月3日実施）における主な意見
     chapter: s1-iken
@@ -56,7 +56,7 @@ slides:
     number_verified: false
 
   - pdf_page: 4
-    printed_page: null
+    printed_page: 3
     type: 論点提示
     title: 医療保険部会（令和8年9月3日開催）における主なご意見①
     chapter: s1-iken
@@ -66,7 +66,7 @@ slides:
     number_verified: false
 
   - pdf_page: 5
-    printed_page: null
+    printed_page: 4
     type: 論点提示
     title: 医療保険部会（令和8年9月3日開催）における主なご意見②
     chapter: s1-iken
@@ -76,7 +76,7 @@ slides:
     number_verified: false
 
   - pdf_page: 6
-    printed_page: null
+    printed_page: 5
     type: chapter
     title: 実施に向けた論点について（中扉）
     chapter: s1-ronten
@@ -84,7 +84,7 @@ slides:
     number_verified: false
 
   - pdf_page: 7
-    printed_page: null
+    printed_page: 6
     type: 論点提示
     title: 実施に向けた論点について（第213回 資料1 再掲）
     chapter: s1-ronten
@@ -94,7 +94,7 @@ slides:
     number_verified: false
 
   - pdf_page: 8
-    printed_page: null
+    printed_page: 7
     type: 対応案
     title: 論点① 長期使用等が医療上必要である場合の具体的な取扱い
     chapter: s1-ronten
@@ -104,7 +104,7 @@ slides:
     number_verified: false
 
   - pdf_page: 9
-    printed_page: null
+    printed_page: 8
     type: 対応案
     title: 論点② ステロイド外用薬のプロアクティブ療法の整理について
     chapter: s1-ronten
@@ -114,7 +114,7 @@ slides:
     number_verified: false
 
   - pdf_page: 10
-    printed_page: null
+    printed_page: 9
     type: 制度概要
     title: （参考）ステロイド外用薬のプロアクティブ療法
     chapter: s1-ronten
@@ -123,7 +123,7 @@ slides:
     number_verified: false
 
   - pdf_page: 11
-    printed_page: null
+    printed_page: 10
     type: 制度概要
     title: （参考）アトピー性皮膚炎診療ガイドライン
     chapter: s1-ronten
@@ -133,7 +133,7 @@ slides:
     number_verified: false
 
   - pdf_page: 12
-    printed_page: null
+    printed_page: 11
     type: 現状データ
     title: （参考）患者調査（Murota H, et al. Dermatol Ther(Heidelb), 2026）
     chapter: s1-ronten
@@ -143,7 +143,7 @@ slides:
     number_verified: false
 
   - pdf_page: 13
-    printed_page: null
+    printed_page: 12
     type: 対応案
     title: 論点③ 指定難病患者等を客観的に確認できる方法
     chapter: s1-ronten
@@ -163,7 +163,7 @@ slides:
     number_verified: false
 
   - pdf_page: 15
-    printed_page: null
+    printed_page: 14
     type: chapter
     title: 制度の円滑な実施について（中扉）
     chapter: s1-enkatsu
@@ -171,7 +171,7 @@ slides:
     number_verified: false
 
   - pdf_page: 16
-    printed_page: null
+    printed_page: 15
     type: 対応案
     title: 医療現場における円滑な制度運用に向けた対応（案）①
     chapter: s1-enkatsu
@@ -181,7 +181,7 @@ slides:
     number_verified: false
 
   - pdf_page: 17
-    printed_page: null
+    printed_page: 16
     type: 対応案
     title: 医療現場における円滑な制度運用に向けた対応（案）②
     chapter: s1-enkatsu
@@ -191,7 +191,7 @@ slides:
     number_verified: false
 
   - pdf_page: 18
-    printed_page: null
+    printed_page: 17
     type: 制度概要
     title: 「別途の負担を求めない者」と「求めない療養」の範囲について（令和8年7月8日 資料1）
     chapter: s1-enkatsu
@@ -202,7 +202,7 @@ slides:
     number_verified: false
 
   - pdf_page: 19
-    printed_page: null
+    printed_page: 18
     type: chapter
     title: 参考資料（中扉）
     chapter: s1-sanko
@@ -210,7 +210,7 @@ slides:
     number_verified: false
 
   - pdf_page: 20
-    printed_page: null
+    printed_page: 19
     type: 論点提示
     title: 患者団体ヒアリング（令和8年8月27日実施）における主な意見
     chapter: s1-sanko
@@ -220,7 +220,7 @@ slides:
     number_verified: false
 
   - pdf_page: 21
-    printed_page: null
+    printed_page: 20
     type: 論点提示
     title: 医療保険部会（令和8年8月27日開催）における主なご意見①
     chapter: s1-sanko
@@ -230,7 +230,7 @@ slides:
     number_verified: false
 
   - pdf_page: 22
-    printed_page: null
+    printed_page: 21
     type: 論点提示
     title: 医療保険部会（令和8年8月27日開催）における主なご意見②
     chapter: s1-sanko
@@ -240,7 +240,7 @@ slides:
     number_verified: false
 
   - pdf_page: 23
-    printed_page: null
+    printed_page: 22
     type: 論点提示
     title: 中医協総会（令和8年8月26日開催）における主なご意見
     chapter: s1-sanko
@@ -250,7 +250,7 @@ slides:
     number_verified: false
 
   - pdf_page: 24
-    printed_page: null
+    printed_page: 23
     type: 制度概要
     title: OTC類似薬の一部保険外療養の実務フロー（院外処方の場合）
     chapter: s1-sanko
@@ -260,7 +260,7 @@ slides:
     number_verified: false
 
   - pdf_page: 25
-    printed_page: null
+    printed_page: 24
     type: 制度概要
     title: 別途の負担の対象となる医療用医薬品の成分一覧（77成分）
     chapter: s1-sanko

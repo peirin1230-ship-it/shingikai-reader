@@ -56,8 +56,12 @@ def split_frontmatter(text: str) -> tuple[dict, str]:
     return yaml.safe_load(text[4:end]) or {}, text[end + 5:]
 
 
-def rewrite_links(md: str, slide_ids: set[str]) -> str:
-    """相対リンクをビューア内のハッシュURLに書き換える。"""
+def rewrite_links(md: str, slide_ids: set[str], doc_key: str = "sanko") -> str:
+    """相対リンクをビューア内のハッシュURLに書き換える。
+
+    pNNN.md          … 同じ資料の別スライド
+    ../{資料}/pNNN.md … 同じ回の別資料のスライド
+    """
     def repl(m: re.Match) -> str:
         label, target = m.group(1), m.group(2)
         if target.startswith(("http://", "https://", "#")):
@@ -67,8 +71,11 @@ def rewrite_links(md: str, slide_ids: set[str]) -> str:
             return f"[{label}](#/g/{g.group(1)})"
         s = re.search(r"(?:^|/)p(\d{3})\.md$", target)
         if s:
+            # ../{資料}/pNNN.md なら、その資料のスライドを指す
+            d = re.search(r"(?:^|/)([\w\-]+)/p\d{3}\.md$", target)
+            want = d.group(1) if d else doc_key
             for sid in slide_ids:
-                if sid.endswith(f"-p{s.group(1)}"):
+                if sid.endswith(f"-{want}-p{s.group(1)}"):
                     return f"[{label}](#/s/{sid})"
         return label   # 解決できない相対リンクはただの文字にする
     return re.sub(r"\[([^\]]+)\]\(([^)]+)\)", repl, md)
@@ -194,7 +201,8 @@ def render_bodies(data: dict) -> None:
     ids = {s["id"] for s in data["slides"]}
     for s in data["slides"]:
         md = s.pop("body_md")
-        s["html"] = mdlite.render(rewrite_links(md, ids)) if md.strip() else ""
+        s["html"] = (mdlite.render(rewrite_links(md, ids, s.get("document_key", "sanko")))
+                     if md.strip() else "")
         s["search"] = " ".join(filter(None, [
             s["title"], s["chapter"], s["slide_type"], s.get("note") or "",
             " ".join(s["themes"]), " ".join(s["terms"]), " ".join(s["supports_topics"]),
