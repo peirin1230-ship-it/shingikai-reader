@@ -86,7 +86,7 @@ slides:
   - pdf_page: 7
     printed_page: 6
     type: 論点提示
-    title: 実施に向けた論点について（第213回 資料1 再掲）
+    title: 実施に向けた論点について（第214回 資料2 再掲）
     chapter: s1-ronten
     themes: [OTC類似薬]
     supports_topics: [OTC類似薬の保険給付の見直し]
@@ -197,7 +197,7 @@ slides:
     chapter: s1-enkatsu
     themes: [OTC類似薬, 患者負担]
     supports_topics: [OTC類似薬の保険給付の見直し]
-    origin: 令和8年7月8日 第212回 社会保障審議会医療保険部会 資料1
+    origin: 令和8年7月8日 第2回 OTC類似薬の保険給付の見直しの実施に向けた技術的検討会 資料1
     text_ok: true
     number_verified: false
 

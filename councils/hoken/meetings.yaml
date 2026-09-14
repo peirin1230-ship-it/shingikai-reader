@@ -1,0 +1,237 @@
+# 社会保障審議会 医療保険部会 の開催実績（回次 → 開催日）
+#
+# 厚生労働省の資料一覧ページ（index_url）の表から機械的に転記した。
+# 解説・KB の中で「第NNN回」と日付が同じ行に書かれていれば、build/validate.py がこの表と突合して
+# 食い違いを ERROR にする（原典の誤植をそのまま引くときは行内に【原典ママ】と書いて除外する）。
+# フロントマターの meeting / meeting_date、年表の title に含まれる回次も同じ表で検査する。
+#
+#   python3 build/validate.py --all --check-meetings   # index_url を取得して、この表と再照合する
+#
+# ★第215回 資料1 p7 の右肩に印字された回次・資料番号は、この表と各回の資料一覧に照らして
+#   原典側の誤記である（councils/hoken/215/shiryo1/p007.md §2 を参照）。
+# ★YAML 1.1 では `no` が偽値に解釈されるので、回次のキーは number にしてある。
+
+council: hoken
+index_url: https://www.mhlw.go.jp/stf/newpage_28708.html
+checked_at: 2026-09-14
+# 会議体名を伴わずに「第NNN回部会」とだけ書かれた参照も、この会議体として検査する
+ref_aliases: [医療保険部会, 部会]
+
+meetings:
+  - number: 216
+    date: 2026-09-16
+    agenda:
+      - "OTC類似薬の保険給付の見直しの実施について"
+      - "令和7年度医療費の動向について（報告）"
+  - number: 215
+    date: 2026-09-11
+    materials_url: https://www.mhlw.go.jp/stf/newpage_76146.html
+    agenda:
+      - "OTC類似薬の保険給付の見直しの実施について"
+      - "医療保険制度改革について"
+  - number: 214
+    date: 2026-09-03
+    materials_url: https://www.mhlw.go.jp/stf/newpage_75969.html
+    agenda:
+      - "OTC類似薬の保険給付の見直しの実施に関するヒアリング"
+      - "OTC類似薬の保険給付の見直しの実施について"
+      - "妊娠・出産・産後における診療やケアの内容等に関する検討会の立ち上げについて（報告）"
+      - "令和9年度予算概算要求（保険局関係）について（報告）"
+  - number: 213
+    date: 2026-08-27
+    materials_url: https://www.mhlw.go.jp/stf/newpage_75815.html
+    agenda:
+      - "OTC類似薬の保険給付の見直しの実施について"
+      - "OTC類似薬の保険給付の見直しの実施に関するヒアリング"
+      - "医療情報化推進方針案等について"
+      - "電子処方箋の進捗状況と今後の対応"
+  - number: 212
+    date: 2026-06-18
+    materials_url: https://www.mhlw.go.jp/stf/newpage_73929.html
+    agenda:
+      - "健康保険法等の一部を改正する法律（令和８年法律第31 号）の成立について"
+      - "OTC類似薬の保険給付の見直しの実施に向けた技術的検討会について"
+      - "マイナ保険証の円滑な利用について"
+      - "年金額の改定を踏まえた自己負担の所得区分における基準額の調整について"
+      - "医療費における保険給付率と患者負担率のバランス等の定期的な見える化について"
+  - number: 211
+    date: 2026-03-19
+    materials_url: https://www.mhlw.go.jp/stf/newpage_71714.html
+    agenda:
+      - "健康保険法等の一部を改正する法律案について（報告）"
+  - number: 210
+    date: 2026-02-12
+    materials_url: https://www.mhlw.go.jp/stf/newpage_70362.html
+    agenda:
+      - "医療法等改正を踏まえた対応について"
+      - "第４期医療費適正化計画における地域フォーミュラリについて"
+      - "マイナ保険証の円滑な利用について"
+      - "令和８年度予算案（保険局関係）の主な事項について（報告）"
+  - number: 209
+    date: 2025-12-25
+    materials_url: https://www.mhlw.go.jp/stf/newpage_67949.html
+    agenda:
+      - "医療保険制度改革について"
+  - number: 208
+    date: 2025-12-18
+    materials_url: https://www.mhlw.go.jp/stf/newpage_67486.html
+    agenda:
+      - "外来特例を始めとする医療保険制度改革についてヒアリング"
+      - "医療保険制度改革について"
+      - "マイナ保険証の利用促進等について"
+  - number: 207
+    date: 2025-12-12
+    materials_url: https://www.mhlw.go.jp/stf/newpage_67104.html
+    agenda:
+      - "医療保険制度における出産に対する支援の強化について"
+      - "医療保険制度改革について"
+      - "後期高齢者医療の保険料の賦課限度額について"
+      - "医療機関の業務効率化・職場環境改善の推進に関する方向性について（案）"
+  - number: 206
+    date: 2025-12-04
+    materials_url: https://www.mhlw.go.jp/stf/newpage_66677.html
+    agenda:
+      - "医療保険制度における出産に対する支援の強化について"
+      - "医療保険制度改革について"
+      - "令和８年度診療報酬改定の基本方針について"
+      - "「強い経済」を実現する総合経済対策～日本と日本人の底力で不安を希望に変える～について（報告）"
+      - "令和７年度補正予算案（保険局関係）の主な事項について（報告）"
+  - number: 205
+    date: 2025-11-27
+    materials_url: https://www.mhlw.go.jp/stf/newpage_66319.html
+    agenda:
+      - "医療保険制度改革について"
+      - "第４期医療費適正化計画における医療資源の効果的・効率的な活用について"
+      - "国民健康保険の保険料（税）の賦課（課税）限度額について"
+      - "業務効率化・職場環境改善の更なる推進に関する方向性について"
+  - number: 204
+    date: 2025-11-20
+    materials_url: https://www.mhlw.go.jp/stf/newpage_66117.html
+    agenda:
+      - "OTC類似薬の保険給付の在り方について患者団体からのヒアリング"
+      - "医療保険制度における出産に対する支援の強化について"
+      - "医療保険制度改革について"
+      - "令和８年度診療報酬改定の基本方針について"
+  - number: 203
+    date: 2025-11-13
+    materials_url: https://www.mhlw.go.jp/stf/newpage_65886.html
+    agenda:
+      - "医療保険制度改革について"
+      - "医療機関の業務効率化・職場環境改善の推進に関する論点について"
+      - "マイナ保険証の利用促進等について"
+  - number: 202
+    date: 2025-11-06
+    materials_url: https://www.mhlw.go.jp/stf/newpage_65636.html
+    agenda:
+      - "医療保険制度改革について"
+  - number: 201
+    date: 2025-10-23
+    materials_url: https://www.mhlw.go.jp/stf/newpage_65085.html
+    agenda:
+      - "医療保険制度における出産に対する支援の強化について"
+      - "医療保険制度改革について"
+      - "令和８年度診療報酬改定の基本方針について"
+  - number: 200
+    date: 2025-10-16
+    materials_url: https://www.mhlw.go.jp/stf/newpage_64752.html
+    agenda:
+      - "医療保険制度改革について"
+      - "マイナ保険証の利用促進等について"
+  - number: 199
+    date: 2025-10-02
+    materials_url: https://www.mhlw.go.jp/stf/newpage_64202.html
+    agenda:
+      - "医療保険制度改革について"
+      - "病床転換助成事業について"
+      - "特定健康診査に相当する健康診査に係る結果送付の電子化"
+      - "個人の予防・健康づくりに向けたインセンティブについて"
+  - number: 198
+    date: 2025-09-26
+    materials_url: https://www.mhlw.go.jp/stf/newpage_63945.html
+    agenda:
+      - "医療保険制度改革について"
+      - "令和８年度診療報酬改定の基本方針について"
+      - "高額療養費制度について"
+  - number: 197
+    date: 2025-09-18
+    materials_url: https://www.mhlw.go.jp/stf/newpage_63640.html
+    agenda:
+      - "医療保険制度改革について"
+      - "令和８年度予算概算要求（保険局関係）について（報告）"
+      - "令和６年度医療費の動向について（報告）"
+  - number: 196
+    date: 2025-08-28
+    materials_url: https://www.mhlw.go.jp/stf/newpage_62501.html
+    agenda:
+      - "診療報酬改定の基本方針について（前回改定の振り返り）"
+      - "マイナ保険証の利用促進等について"
+      - "電子処方箋・電子カルテの目標設定等について（報告事項）"
+  - number: 195
+    date: 2025-06-19
+    materials_url: https://www.mhlw.go.jp/stf/newpage_58958.html
+    agenda:
+      - "被用者保険の適用拡大について"
+      - "病床転換助成事業について"
+      - "「経済財政運営と改革の基本方針2025」、「新しい資本主義のグランドデザイン及び実行計画2025改訂版」及び「規制改革実行計画」等について"
+  - number: 194
+    date: 2025-05-01
+    materials_url: https://www.mhlw.go.jp/stf/newpage_57556.html
+  - number: 193
+    date: 2025-04-03
+    materials_url: https://www.mhlw.go.jp/stf/newpage_56697.html
+    agenda:
+      - "１．マイナ保険証の利用促進等について"
+      - "２．被用者保険における予防・健康づくりの推進について"
+      - "３．第３期医療費適正化計画の実績評価及び第４期全国医療費適正化計画について（報告）"
+      - ""
+      - "４．年金額の改定を踏まえた自己負担の所得区分における基準額の調整について"
+      - ""
+      - "５．医療法等の一部を改正する法律案の閣議決定について（報告）"
+  - number: 192
+    date: 2025-01-23
+    materials_url: https://www.mhlw.go.jp/stf/newpage_49644.html
+    agenda:
+      - "１．電子処方箋の現況と今後の対応"
+      - "２．高額療養費制度の見直しについて（報告）"
+      - "３．令和７年度予算案（保険局関係）の主な事項について（報告）"
+      - "４．骨太方針2024 を踏まえた取組方針について（報告）"
+  - number: 191
+    date: 2024-12-26
+    materials_url: https://www.mhlw.go.jp/stf/newpage_48148.html
+    agenda:
+      - "１．被用者保険の適用拡大及びいわゆる「年収の壁」への対応について"
+      - "２．入院時の食費について"
+  - number: 190
+    date: 2024-12-19
+    materials_url: https://www.mhlw.go.jp/stf/newpage_47571.html
+    agenda:
+      - "１．医師偏在是正対策について"
+      - "２．その他"
+  - number: 189
+    date: 2024-12-12
+    materials_url: https://www.mhlw.go.jp/stf/newpage_46880.html
+    agenda:
+      - "１．被用者保険の適用拡大及びいわゆる「年収の壁」への対応について"
+      - "２．医療保険制度改革について"
+      - "３．医療ＤＸの推進等について"
+  - number: 188
+    date: 2024-12-05
+    materials_url: https://www.mhlw.go.jp/stf/newpage_46486.html
+    agenda:
+      - "１．医療保険制度改革について"
+      - "２．「国民の安心・安全と持続的な成長に向けた総合経済対策～全ての世代の現在・将来の賃金・所得を増やす～」について（報告）"
+      - "３．令和６年度補正予算案（保険局関係）の主な事項について（報告）"
+  - number: 187
+    date: 2024-11-28
+    materials_url: https://www.mhlw.go.jp/stf/newpage_46203.html
+    agenda:
+      - "１．医師偏在是正対策について"
+      - "２．医療保険制度改革について"
+  - number: 186
+    date: 2024-11-21
+    materials_url: https://www.mhlw.go.jp/stf/newpage_45733.html
+    agenda:
+      - "１．被用者保険の適用拡大及びいわゆる「年収の壁」への対応について"
+      - "２．医療保険制度改革について"
+      - "３．マイナ保険証の利用促進等について"
+      - "４．出産費用の状況等について（報告）"

@@ -257,7 +257,11 @@ def main(argv: list[str] | None = None) -> int:
     written = sum(1 for s in data["slides"] if s["has_commentary"])
     unverified = sum(1 for s in data["slides"] if s["has_commentary"] and not s["number_verified"])
     third = sum(1 for s in data["slides"] if s["third_party_figure"])
-    print(f"{out.relative_to(ROOT)}/ を生成した")
+    try:
+        shown = out.relative_to(ROOT)
+    except ValueError:      # --out にリポジトリ外のパスを渡したとき
+        shown = out
+    print(f"{shown}/ を生成した")
     print(f"  スライド  {len(data['slides'])}枚（解説あり {written}枚 / 数値未検証 {unverified}枚）")
     print(f"  画像      {n_images}ファイル"
           f"{'（第三者図版 %d枚は配信しない）' % third if third and not args.include_third_party else ''}")

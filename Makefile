@@ -49,9 +49,13 @@ extract: setup
 extract-all: setup
 	$(PY) build/extract.py --all
 
-## validate: フロントマター・数値・参照キーを検証する（URL死活は --check-urls）
+## validate: フロントマター・数値・参照キー・回次と開催日を検証する（URL死活は --check-urls）
 validate:
 	$(PY) build/validate.py --all
+
+## check-meetings: 回次と開催日の台帳（councils/*/meetings.yaml）を厚労省の資料一覧ページと再照合する
+check-meetings:
+	$(PY) build/validate.py --all --check-meetings
 
 ## build: 解説Markdown + KB からサイトを生成する
 build:
@@ -73,4 +77,4 @@ clean:
 distclean: clean
 	rm -rf source
 
-.PHONY: help setup fetch fetch-all extract extract-all validate build serve site clean distclean
+.PHONY: help setup fetch fetch-all extract extract-all validate check-meetings build serve site clean distclean

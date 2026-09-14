@@ -112,6 +112,7 @@ shingikai-reader/
 ├── councils/
 │   ├── hoken/                     # 社会保障審議会 医療保険部会
 │   │   ├── council.yaml           # 正式名称・所管課・資料一覧ページURL
+│   │   ├── meetings.yaml          # 回次→開催日の台帳（validate.py が回次と日付を突合する）
 │   │   ├── 215/
 │   │   │   ├── _meta.yaml         # 回のメタ + スライド索引
 │   │   │   ├── manifest.yaml      # PDFのURL・SHA256・取得日

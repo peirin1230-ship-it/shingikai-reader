@@ -63,7 +63,7 @@ Pagesへのデプロイはブランチにコミットせずアーティファク
 make setup     # 依存（poppler-utils, webp, tesseract）の確認
 make fetch     # manifest.yaml のURLからPDFを取得しSHA256を検証 → source/
 make extract   # PDF → images/ (WebP) + work/ (テキスト・OCR)
-make validate  # フロントマター・数値・参照キー・URLの検証
+make validate  # フロントマター・数値・参照キー・回次と開催日の検証（URL死活は --check-urls）
 make build     # 解説Markdown + KB → dist/
 make serve     # dist/ をローカル配信（http://localhost:8000）
 ```
@@ -80,6 +80,7 @@ make serve     # dist/ をローカル配信（http://localhost:8000）
 python3 build/fetch.py    --council hoken --meeting 215
 python3 build/extract.py  --council hoken --meeting 215 --document sanko
 python3 build/validate.py --all
+python3 build/validate.py --all --check-meetings   # 回次と開催日の台帳を厚労省サイトと再照合
 python3 build/build.py    --out dist
 ```
 
@@ -112,7 +113,7 @@ python3 build/inspect.py --council hoken --meeting 215 --page 77 --grid
 | v1.1 | 資料1「OTC類似薬の保険給付の見直しの実施について」 | ✅ **25/25枚** |
 | v1.2 | 資料2「次期医療保険制度改革に向けて」 | ✅ **34/34枚** |
 | v1.2 | 議事次第 | ✅ 1/1枚 |
-| v1.3 | 参照文書の取得 | ✅ **kb/documents.yaml の11件すべて原典を取得済み** |
+| v1.3 | 参照文書の取得 | ✅ **kb/documents.yaml の12件すべて取得済み（PDF 9件はSHA256つき）** |
 | v1.4 | 数値照合（`number_verified: true` にする） | 🚧 143枚すべて `false` のまま |
 
 **第215回の3資料142ページすべてに解説がある。**
@@ -138,9 +139,10 @@ python3 build/inspect.py --council hoken --meeting 215 --page 77 --grid
 
 ### 参照している文書
 
-解説が参照する上位の文書（閣議決定・政党間合意・法律）は
-[`kb/documents.yaml`](kb/documents.yaml) に、URLとSHA256つきで登録している。
-**11件すべて原典を取得済みである。**
+解説が参照する上位の文書（閣議決定・政党間合意・法律・裏取りに使った審議会資料）は
+[`kb/documents.yaml`](kb/documents.yaml) に登録している。12件のうち
+**PDFの9件はURL・SHA256・取得日つき**、HTMLページの3件（法律案一覧・公共データ利用規約・資料一覧）はURLのみである。
+PDFなのにSHA256がない項目は `validate.py` が警告する。
 
 最後まで残っていた「**医療法に関する三党合意書**」（令和7年6月6日）は、
 政党の公式サイトに掲載が確認できず、二次情報だけを記録していた。
@@ -166,6 +168,18 @@ councils/hoken/215/{sanko,shiryo1,shiryo2,shidai}/pNNN.md
 `build/validate.py` はリンク先の存在に加えて、
 **リンクのラベルが索引上のタイトルと合っているか**も照合する
 （ページ番号を取り違えるとリンクは通るのにラベルが別のスライドを指すため）。
+
+### 回次と開催日の突合
+
+[`councils/hoken/meetings.yaml`](councils/hoken/meetings.yaml) に、厚労省の資料一覧ページから転記した
+**回次→開催日の台帳**を置いている。`validate.py` は解説・KB・docs・README の全行について、
+「第NNN回」と同じ行に書かれた日付をこの台帳と突合し、食い違えば ERROR にする
+（フロントマターの `meeting`／`meeting_date`、年表の `title` も同様）。
+
+これを入れたのは、**資料1 p7 の右肩の印字「令和8年9月3日 第213回 資料1」【原典ママ】が原典側の誤記**
+（正しくは第214回 資料2。第213回は8月27日）で、それを起点にした解説14ファイルが
+回次を逆に書いていたためである。原典の誤記をそのまま引用する行には `【原典ママ】` を付けて除外する。
+経緯は [`docs/pipeline-notes.md`](docs/pipeline-notes.md) §10。
 
 ### 次の作業
 
@@ -262,10 +276,22 @@ councils/hoken/215/{sanko,shiryo1,shiryo2,shidai}/pNNN.md
 
 ---
 
+## 独立した照合の記録
+
+解説を書いたセッションとは別に行った照合は [`docs/factcheck-log.md`](docs/factcheck-log.md) に、
+誰が・いつ・何を・どうやって確かめたかとともに記録している。
+2026-09-14 の照合（AIセッションによるもの。人による照合ではない）では、
+画像のみページ3枚（p029・p035・p059）の全数値、骨太2026の引用17か所と注126、
+三党合意・骨子・連立政権合意書のスキャン、e-Gov の法律番号と施行日を確かめ、
+回次の取り違え（上記）を見つけて直した。
+**`number_verified` は人が照合するまで false のままである。**
+
 ## 誤りへの備え
 
 - **内容の正確性は保証しない。** 解説には誤りが混入しうる。
 - **一次情報は必ず原典にあたること。** `manifest.yaml` にURLとSHA256がある。
+- **原典にも誤記がある。** 資料1 p7 の右肩の回次・資料番号がその例で、回次と開催日は
+  `councils/hoken/meetings.yaml` を正として機械的に突合している。
 - `number_verified: false` のスライドは、数値が人の目で照合されていない。
 - 委員の発言は、議事録が公開されるまで記載しない（第215回の議事録は未公開）。
 

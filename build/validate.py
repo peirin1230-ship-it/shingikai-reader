@@ -14,6 +14,11 @@
   5. 参照キーの解決（supports_topics → kb/topics.yaml、terms → kb/glossary、
      関連スライドのリンク、相対リンクの実在）
   6. --check-urls を付けたときは外部URLの死活
+  7. 「第NNN回」と同じ行に書かれた日付が councils/{会議体}/meetings.yaml の開催日と合っているか
+     （フロントマターの meeting / meeting_date、年表 title の回次も同じ表で検査する。
+      原典の誤記をそのまま引用する行は【原典ママ】を付けて除外する）
+  8. --check-meetings を付けたときは、meetings.yaml を会議体の資料一覧ページ（index_url）と再照合
+  9. kb/documents.yaml の PDF に sha256 が付いているか
 
 ERROR があれば終了コード1。WARN は0のまま返す（CIのマージ条件はERRORのみ）。
 """
@@ -50,6 +55,22 @@ SECTIONS = ["1. 一文要約", "2. 書いてあること", "3. このスライ�
 SECTIONS_LIGHT = ["1. 一文要約", "9. 出典"]
 LIGHT_TYPES = {"chapter", "cover", "toc"}
 SUMMARY_LIMIT = 40
+
+# ---- 回次と開催日の突合（councils/{key}/meetings.yaml）----
+# 「第221回国会」は会議体の回次ではないので除く
+MEETING_REF = re.compile(r"第\s*(\d{1,4})\s*回(?!国会)")
+ERA_BASE = {"令和": 2018, "平成": 1988, "昭和": 1925}
+DATE_RES = [
+    re.compile(r"(?P<y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})"),
+    re.compile(r"(?P<y>\d{4})年\s*(?P<m>\d{1,2})月\s*(?P<d>\d{1,2})日"),
+    re.compile(r"(?P<era>令和|平成|昭和)\s*(?P<ey>\d{1,2})年\s*(?P<m>\d{1,2})月\s*(?P<d>\d{1,2})日"),
+    re.compile(r"(?<![\d年])(?P<m>\d{1,2})月\s*(?P<d>\d{1,2})日"),   # 年のない「9月3日」
+]
+# 原典の誤記をそのまま引用する行に付ける印。この印がある行は突合しない
+SOURCE_ASIS = "【原典ママ】"
+# 日付の直後にこれらが続くときは「その日に何かをした」日付であって開催日ではない
+DATE_NOT_MEETING = ("時点", "現在", "閲覧", "取得", "確認", "実施", "公布", "施行", "閣議決定")
+MEETINGS: dict[str, dict] = {}
 
 # 数値突合から除くもの。転記した数値ではないため
 NUMBER_SKIP_PATTERNS = [
@@ -120,6 +141,107 @@ def body_numbers(body: str) -> set[str]:
     return numbers_in(scrubbed)
 
 
+def load_meetings() -> dict[str, dict]:
+    """councils/{key}/meetings.yaml を読み、{会議体: {aliases, index_url, meetings: {回次: 'YYYY-MM-DD'}}} を返す。"""
+    regs: dict[str, dict] = {}
+    for path in sorted(COUNCILS.glob("*/meetings.yaml")):
+        data = load_yaml(path) or {}
+        regs[path.parent.name] = {
+            "aliases": [str(a) for a in (data.get("ref_aliases") or [])],
+            "index_url": data.get("index_url"),
+            "meetings": {int(m["number"]): str(m["date"]) for m in (data.get("meetings") or [])},
+        }
+    return regs
+
+
+def dates_in(line: str) -> list[tuple[int, int, int | None, int, int]]:
+    """行内の日付を (開始位置, 終了位置, 年 or None, 月, 日) で返す。年のない「9月3日」も拾う。
+    「2026年9月14日時点」のように開催日でないことが明らかな日付は返さない。"""
+    out: list[tuple[int, int, int | None, int, int]] = []
+    taken: list[tuple[int, int]] = []
+    for rx in DATE_RES:
+        for m in rx.finditer(line):
+            if any(a <= m.start() < b for a, b in taken):
+                continue
+            taken.append((m.start(), m.end()))
+            if line[m.end():].lstrip("（(").startswith(DATE_NOT_MEETING):
+                continue
+            g = m.groupdict()
+            if g.get("era"):
+                year: int | None = ERA_BASE[g["era"]] + int(g["ey"])
+            else:
+                year = int(g["y"]) if g.get("y") else None
+            out.append((m.start(), m.end(), year, int(g["m"]), int(g["d"])))
+    return out
+
+
+def check_meeting_line(where: str, raw: str, file_council: str | None, rep: Report) -> None:
+    """1行の中の「第NNN回」を、いちばん近い日付と組にして meetings.yaml と突合する。"""
+    if SOURCE_ASIS in raw:
+        return
+    line = unicodedata.normalize("NFKC", raw)
+    refs = list(MEETING_REF.finditer(line))
+    if not refs:
+        return
+    dates = dates_in(line)
+    if not dates:
+        return
+    for m in refs:
+        no = int(m.group(1))
+        for key, reg in MEETINGS.items():
+            # 会議体のディレクトリ内か、行に会議体名（別名）があるときだけ、その会議体として読む
+            if key != file_council and not any(a in line for a in reg["aliases"]):
+                continue
+            expected = reg["meetings"].get(no)
+            if not expected:
+                continue
+            # 回次と日付の「隙間」が最も小さいものを組にする（前後どちらにあってもよい）
+            _, _, y, mo, d = min(dates, key=lambda t: max(0, max(t[0], m.start()) - min(t[1], m.end())))
+            ey, em, ed = (int(x) for x in expected.split("-"))
+            if (mo, d) != (em, ed) or (y is not None and y != ey):
+                rep.error(where, f"第{no}回（{key}）の開催日は {expected} だが、行内の日付は "
+                                 f"{y if y else '????'}-{mo:02d}-{d:02d}: {raw.strip()[:70]}")
+
+
+def check_meeting_refs(rep: Report) -> None:
+    """解説・KB・docs・README の全行を回次と日付の組で検査する。"""
+    files = [p for p in list(ROOT.glob("councils/**/*")) + list(ROOT.glob("kb/**/*"))
+             + list(ROOT.glob("docs/*.md")) + [ROOT / "README.md"]
+             if p.is_file() and p.suffix in {".md", ".yaml"}]
+    for path in sorted(files):
+        rel = path.relative_to(ROOT)
+        file_council = rel.parts[1] if rel.parts[0] == "councils" and len(rel.parts) > 2 else None
+        for n, raw in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            check_meeting_line(f"{rel}:{n}", raw, file_council, rep)
+
+
+def check_meetings_online(rep: Report) -> None:
+    """index_url の表を取得し、meetings.yaml の回次と開催日を照合する（厚労省の資料一覧ページの表構造に依存）。"""
+    for key, reg in MEETINGS.items():
+        url = reg.get("index_url")
+        if not url:
+            continue
+        req = urllib.request.Request(url, headers={"User-Agent": "shingikai-reader/0.1"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                page = resp.read().decode("utf-8", errors="replace")
+        except Exception as exc:  # noqa: BLE001
+            rep.warn("meetings", f"{key}: index_url に到達できない（{exc}）: {url}")
+            continue
+        found: dict[int, str] = {}
+        for m in re.finditer(r"第(\d+)回</td>\s*<td[^>]*>(\d{4})年(\d{1,2})月(\d{1,2})日", page):
+            found[int(m.group(1))] = f"{m.group(2)}-{int(m.group(3)):02d}-{int(m.group(4)):02d}"
+        if not found:
+            rep.warn("meetings", f"{key}: index_url から回次と開催日を読み取れなかった（ページ構造が変わった可能性）: {url}")
+            continue
+        for no, date in sorted(found.items()):
+            if no not in reg["meetings"]:
+                rep.warn("meetings", f"{key}: 第{no}回（{date}）が meetings.yaml にない。追記すること")
+            elif reg["meetings"][no] != date:
+                rep.error("meetings", f"{key}: 第{no}回の開催日が食い違う meetings.yaml={reg['meetings'][no]} / index_url={date}")
+        print(f"  {key}: index_url から {len(found)} 回分を読み取り、meetings.yaml と照合した")
+
+
 def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[str],
                 pages_json: dict, rep: Report, doc_key: str = "sanko",
                 indexes: dict | None = None) -> None:
@@ -170,6 +292,13 @@ def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[
             missing = set(slide.get(key) or []) - set(fm.get(key) or [])
             if missing:
                 rep.warn(where, f"_meta.yaml にあるが解説側にない {key}: {sorted(missing)}")
+
+    # ---- 2b. 回次と開催日（councils/{key}/meetings.yaml）----
+    reg = MEETINGS.get(str(fm.get("council")), {}).get("meetings", {})
+    if isinstance(fm.get("meeting"), int) and fm["meeting"] in reg \
+            and str(fm.get("meeting_date")) != reg[fm["meeting"]]:
+        rep.error(where, f"meeting_date {fm.get('meeting_date')} が meetings.yaml の"
+                         f"第{fm['meeting']}回の開催日 {reg[fm['meeting']]} と食い違う")
 
     # ---- 3. 節構成と一文要約 ----
     heads = re.findall(r"^##\s+(.+)$", body, re.M)
@@ -299,10 +428,22 @@ def check_kb(rep: Report) -> tuple[set[str], set[str]]:
         for topic in entry.get("topics") or []:
             if topic not in titles:
                 rep.error("kb/timeline.yaml", f"{entry['id']}: topics が解決できない: {topic}")
+        # title に「第NNN回」があり日付が日単位なら、開催日と突合する
+        title = unicodedata.normalize("NFKC", str(entry.get("title") or ""))
+        m = MEETING_REF.search(title)
+        if m and entry.get("date_precision") == "day":
+            for key, reg in MEETINGS.items():
+                expected = reg["meetings"].get(int(m.group(1)))
+                if any(a in title for a in reg["aliases"]) and expected \
+                        and str(entry.get("date")) != expected:
+                    rep.error("kb/timeline.yaml", f"{entry['id']}: 第{m.group(1)}回（{key}）の開催日は "
+                                                  f"{expected} だが date は {entry.get('date')}")
 
     for doc in load_yaml(KB / "documents.yaml") or []:
         if not doc.get("url"):
             rep.error("kb/documents.yaml", f"{doc.get('key')}: url は必須")
+        elif str(doc["url"]).lower().endswith(".pdf") and not doc.get("sha256"):
+            rep.warn("kb/documents.yaml", f"{doc.get('key')}: PDF なのに sha256 がない（取得して記録すること）")
         for topic in doc.get("topics") or []:
             if topic not in titles:
                 rep.error("kb/documents.yaml", f"{doc.get('key')}: topics が解決できない: {topic}")
@@ -340,12 +481,17 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--meeting")
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--check-urls", action="store_true")
+    ap.add_argument("--check-meetings", action="store_true",
+                    help="meetings.yaml を会議体の資料一覧ページ（index_url）と再照合する（ネットワークに出る）")
     args = ap.parse_args(argv)
     if not args.all and not args.council:
         ap.error("--council か --all のどちらかを指定すること")
 
     rep = Report()
+    global MEETINGS
+    MEETINGS = load_meetings()
     topics, glossary = check_kb(rep)
+    check_meeting_refs(rep)
 
     pattern = f"{args.council or '*'}/{args.meeting or '*'}/_meta.yaml"
     for meta_path in sorted(COUNCILS.glob(pattern)):
@@ -379,6 +525,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.check_urls:
         print("URLの死活:")
         check_urls(rep)
+    if args.check_meetings:
+        print("回次と開催日の再照合:")
+        check_meetings_online(rep)
 
     for line in rep.warns:
         print(line)

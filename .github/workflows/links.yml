@@ -16,5 +16,5 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pyyaml
-      - name: URLの死活
-        run: python build/validate.py --all --check-urls
+      - name: URLの死活と、回次・開催日の台帳の再照合
+        run: python build/validate.py --all --check-urls --check-meetings
