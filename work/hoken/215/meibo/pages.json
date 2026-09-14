@@ -1,0 +1,37 @@
+{
+  "council": "hoken",
+  "meeting": "215",
+  "document": "meibo",
+  "pages": [
+    {
+      "pdf_page": 1,
+      "printed_page": null,
+      "title": null,
+      "type": null,
+      "chars": 585,
+      "bytes": 1749,
+      "text_extractable": true,
+      "auto_by_chars": true,
+      "auto_by_bytes": true,
+      "declared_text_ok": null,
+      "low_text_exempt": false,
+      "bold_spans": [],
+      "ocr": false
+    },
+    {
+      "pdf_page": 2,
+      "printed_page": null,
+      "title": null,
+      "type": null,
+      "chars": 298,
+      "bytes": 864,
+      "text_extractable": true,
+      "auto_by_chars": true,
+      "auto_by_bytes": true,
+      "declared_text_ok": null,
+      "low_text_exempt": false,
+      "bold_spans": [],
+      "ocr": false
+    }
+  ]
+}

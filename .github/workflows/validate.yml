@@ -33,8 +33,10 @@ jobs:
 
       # 数値の突合には抽出テキストが要る。PRの検証では画像は使わないが、
       # extract.py はテキストと画像をまとめて作るのでそのまま走らせる
+      # OCR結果は work/ にコミット済みで、サイトも検証もOCRを使わない。
+      # CIで焼き直す意味はなく tesseract も要らないので --ocr off で走らせる
       - name: 画像とテキストへの分解
-        run: python build/extract.py --all
+        run: python build/extract.py --all --ocr off
 
       - name: 検証（ERRORがあれば失敗）
         run: python build/validate.py --all

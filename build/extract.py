@@ -10,13 +10,20 @@
     images/{council}/{meeting}/{doc}/pNNN.thumb.webp  320px 幅
     work/{council}/{meeting}/{doc}/pNNN.txt           pdftotext -layout
     work/{council}/{meeting}/{doc}/pNNN.bold.txt      太字スパン（SPEC §2.1 §6用）
+    work/{council}/{meeting}/{doc}/pNNN.ocr.txt       OCR結果（--ocr のとき）
     work/{council}/{meeting}/{doc}/pages.json         ページごとの抽出文字数など
 
 抽出文字数（空白を除く）が100字未満のページには text_extractable: false を立てる。
 _meta.yaml に text_ok があれば突き合わせ、食い違いを警告する。
 章扉・表紙・目次はもともと文字数が少ないので、この判定からは除く。
 
+★OCRは補助であって、原典のテキスト層の代わりにはならない。
+  図表が画像で貼られたページのテキストを読むための手がかりとして置くだけで、
+  数値の突合には使わない（validate.py はOCR結果を参照しない）。
+  実測した精度の限界は docs/pipeline-notes.md §8 を見ること。
+
 必要な外部コマンド: pdftoppm, pdftotext, pdfinfo, cwebp, pdftohtml
+                  OCRを使うときは tesseract（tesseract-ocr-jpn も要る）
 """
 from __future__ import annotations
 
@@ -51,15 +58,27 @@ WIDE_PX = 1600
 THUMB_PX = 320
 WEBP_Q = 80
 
+# OCRの設定。400dpi・psm 4（段の中で行の大きさが変わるレイアウト）が
+# 手元の比較でいちばん妥当だった（docs/pipeline-notes.md §8）
+OCR_DPI = 400
+OCR_LANG = "jpn"
+OCR_PSM = "4"
+
 REQUIRED = ["pdftoppm", "pdftotext", "pdfinfo", "cwebp", "pdftohtml"]
 
 
-def check_tools() -> None:
+def check_tools(need_ocr: bool) -> None:
     missing = [c for c in REQUIRED if shutil.which(c) is None]
     if missing:
         print(f"必要なコマンドがない: {', '.join(missing)}\n"
               f"  Debian/Ubuntu: sudo apt-get install -y poppler-utils webp\n"
               f"  macOS:         brew install poppler webp", file=sys.stderr)
+        raise SystemExit(1)
+    if need_ocr and shutil.which("tesseract") is None:
+        print("OCRを指定したが tesseract がない\n"
+              "  Debian/Ubuntu: sudo apt-get install -y tesseract-ocr tesseract-ocr-jpn\n"
+              "  macOS:         brew install tesseract tesseract-lang\n"
+              "  OCRなしで進めるなら --ocr off", file=sys.stderr)
         raise SystemExit(1)
 
 
@@ -89,6 +108,25 @@ def bold_spans(pdf: Path, page: int) -> list[str]:
     return spans
 
 
+def ocr_page(pdf: Path, page: int, tmp: str) -> str:
+    """1ページをOCRして文字列を返す。読み取り精度は保証しない。"""
+    stem = Path(tmp) / f"ocr{page:03d}"
+    run(["pdftoppm", "-r", str(OCR_DPI), "-gray", "-png", "-f", str(page), "-l", str(page),
+         str(pdf), str(stem)])
+    pngs = sorted(Path(tmp).glob(f"ocr{page:03d}-*.png"))
+    if not pngs:
+        return ""
+    png = pngs[0]
+    out = Path(tmp) / f"ocr{page:03d}"
+    run(["tesseract", str(png), str(out), "-l", OCR_LANG, "--psm", OCR_PSM])
+    png.unlink()
+    result = out.with_suffix(".txt")
+    text = result.read_text(encoding="utf-8", errors="replace") if result.exists() else ""
+    if result.exists():
+        result.unlink()
+    return text
+
+
 def load_meta(council: str, meeting: str) -> dict:
     path = COUNCILS / council / str(meeting) / "_meta.yaml"
     if not path.exists():
@@ -97,7 +135,8 @@ def load_meta(council: str, meeting: str) -> dict:
         return yaml.safe_load(fh) or {}
 
 
-def extract_document(council: str, meeting: str, key: str, meta: dict, force: bool) -> list[dict]:
+def extract_document(council: str, meeting: str, key: str, meta: dict, force: bool,
+                     ocr_mode: str) -> list[dict]:
     pdf = SOURCE / council / str(meeting) / f"{key}.pdf"
     if not pdf.exists():
         print(f"  {council}/{meeting}/{key}: 原典がない（先に fetch.py を走らせる）→ {pdf}")
@@ -112,12 +151,12 @@ def extract_document(council: str, meeting: str, key: str, meta: dict, force: bo
     # _meta.yaml のスライド索引は、その索引が対象にしている資料のものでしかない。
     # 別の資料に流用すると、ページ番号だけが一致した無関係なスライド情報が付いてしまう
     meta_key = (meta.get("document") or {}).get("key")
-    by_page = ({s["pdf_page"]: s for s in meta.get("slides", [])}
-               if meta and meta_key == key else {})
-    if meta and meta_key != key:
-        print(f"    （_meta.yaml の索引は {meta_key} のもの。この資料には使わない）")
+    has_index = bool(meta) and meta_key == key
+    by_page = {s["pdf_page"]: s for s in meta.get("slides", [])} if has_index else {}
 
     print(f"  {council}/{meeting}/{key}: {total}ページ")
+    if meta and not has_index:
+        print(f"    （_meta.yaml の索引は {meta_key} のもの。この資料には使わない）")
     pages: list[dict] = []
     with tempfile.TemporaryDirectory() as tmp:
         for page in range(1, total + 1):
@@ -179,6 +218,28 @@ def extract_document(council: str, meeting: str, key: str, meta: dict, force: bo
 
             if declared is not None and not exempt and declared != auto_chars:
                 record["meta_mismatch"] = True
+
+            # ---- OCR ----
+            # 既定（missing）は「テキスト層から中身を読めないページ」を対象にする。
+            # _meta.yaml の宣言と文字数基準のどちらかが false ならOCRする。
+            #   宣言が false … 大型の数表が丸ごと画像のページ
+            #   文字数が少ない … 題名と出典しかなく、グラフの数値が画像の中にあるページ
+            # OCR結果は補助であり、text_extractable や number_verified には影響しない
+            ocr_path = txt_dir / f"{tag}.ocr.txt"
+            want_ocr = (ocr_mode == "all") or (
+                ocr_mode == "missing" and not exempt and not (effective and auto_chars))
+            if want_ocr:
+                if force or not ocr_path.exists():
+                    ocr_text = ocr_page(pdf, page, tmp)
+                    ocr_path.write_text(ocr_text, encoding="utf-8")
+                else:
+                    ocr_text = ocr_path.read_text(encoding="utf-8", errors="replace")
+                record["ocr"] = True
+                record["ocr_chars"] = len(re.sub(r"\s", "", ocr_text))
+                record["ocr_note"] = "OCRは補助。数値は原典の画像と人が照合すること"
+            else:
+                record["ocr"] = False
+
             pages.append(record)
 
     (txt_dir / "pages.json").write_text(
@@ -188,12 +249,17 @@ def extract_document(council: str, meeting: str, key: str, meta: dict, force: bo
 
     low = [p["pdf_page"] for p in pages if not p["text_extractable"]]
     only_chars = [p["pdf_page"] for p in pages if p.get("meta_mismatch")]
+    ocred = [p["pdf_page"] for p in pages if p.get("ocr")]
     print(f"    画像 {total*2} 枚 / テキスト {total} ファイル")
-    print(f"    text_extractable: false（_meta.yaml の宣言に従う）→ {low if low else 'なし'}")
+    basis = "_meta.yaml の宣言に従う" if has_index else f"文字数 {TEXT_THRESHOLD}字未満"
+    print(f"    text_extractable: false（{basis}）→ {low if low else 'なし'}")
     if only_chars:
         print(f"    ! 文字数基準（<{TEXT_THRESHOLD}字）では false になるが _meta.yaml は text_ok: true → {only_chars}")
         print(f"      図表が画像で、テキスト層に題名と出典しかないページ。人が判断すること")
         print(f"      （docs/pipeline-notes.md 参照）")
+    if ocred:
+        print(f"    OCR {len(ocred)}ページ → *.ocr.txt "
+              f"（補助。数値は人が原典と照合すること）")
     return pages
 
 
@@ -207,11 +273,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--force", action="store_true", help="既存の生成物を作り直す")
     ap.add_argument("--include-inactive", action="store_true",
                     help="manifest の active: false の資料も対象にする")
+    ap.add_argument("--ocr", choices=["off", "missing", "all"], default="missing",
+                    help="OCRの対象。off=しない / missing=テキスト層が空のページだけ（既定） / all=全ページ")
     args = ap.parse_args(argv)
 
     if not args.all and not args.council:
         ap.error("--council か --all のどちらかを指定すること")
-    check_tools()
+    check_tools(args.ocr != "off")
 
     pattern = f"{args.council or '*'}/{args.meeting or '*'}/manifest.yaml"
     done = 0
@@ -226,7 +294,7 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             if not args.document and not args.include_inactive and not doc.get("active", True):
                 continue
-            if extract_document(council, meeting, doc["key"], meta, args.force):
+            if extract_document(council, meeting, doc["key"], meta, args.force, args.ocr):
                 done += 1
 
     if not done:

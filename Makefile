@@ -24,7 +24,7 @@ help:
 ## setup: 必要な外部コマンドが入っているか確認する
 setup:
 	@ok=1; \
-	for c in pdftotext pdftoppm pdfinfo cwebp; do \
+	for c in pdftotext pdftoppm pdfinfo cwebp tesseract; do \
 	  if command -v $$c >/dev/null 2>&1; then printf '  %-10s OK\n' $$c; \
 	  else printf '  %-10s MISSING\n' $$c; ok=0; fi; \
 	done; \
@@ -41,7 +41,7 @@ fetch:
 fetch-all:
 	$(PY) build/fetch.py --all
 
-## extract: PDF を画像（images/）と抽出テキスト（work/）に分解する
+## extract: PDF を画像（images/）と抽出テキスト・OCR（work/）に分解する
 extract: setup
 	$(PY) build/extract.py $(DOCTARGET)
 

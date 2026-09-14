@@ -1,0 +1,22 @@
+{
+  "council": "hoken",
+  "meeting": "215",
+  "document": "shidai",
+  "pages": [
+    {
+      "pdf_page": 1,
+      "printed_page": null,
+      "title": null,
+      "type": null,
+      "chars": 156,
+      "bytes": 430,
+      "text_extractable": true,
+      "auto_by_chars": true,
+      "auto_by_bytes": true,
+      "declared_text_ok": null,
+      "low_text_exempt": false,
+      "bold_spans": [],
+      "ocr": false
+    }
+  ]
+}

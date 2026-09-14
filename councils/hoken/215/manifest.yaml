@@ -32,10 +32,9 @@ documents:
     # active: true の資料だけが fetch.py / extract.py の既定の対象になる
     active: true
 
-  # ---- 取得・検証済みだが、まだ解説の対象にしていない資料（SPEC §5 / v1.1で追加する）----
-  # active: false なので fetch.py / extract.py の既定の対象から外れる。
-  # 個別に扱うときは --document で指定するか --include-inactive を付ける。
-  # 解説を書き始めるときに active: true にし、_meta.yaml の acquired も true にする
+  # ---- 取得・検証済み。テキスト抽出まで済ませてある資料 ----
+  # 解説（councils/hoken/215/{key}/）はまだ書いていない（SPEC §5 / v1.1）。
+  # active: false にすると fetch.py / extract.py の既定の対象から外れる
   - key: shiryo1
     id: 資料1
     title: OTC類似薬の保険給付の見直しの実施について
@@ -45,7 +44,7 @@ documents:
     pages: 25
     fetched_at: 2026-09-14
     verified: true
-    active: false
+    active: true
 
   - key: shiryo2
     id: 資料2
@@ -56,7 +55,7 @@ documents:
     pages: 34
     fetched_at: 2026-09-14
     verified: true
-    active: false
+    active: true
 
   - key: shidai
     id: 議事次第
@@ -67,7 +66,7 @@ documents:
     pages: 1
     fetched_at: 2026-09-14
     verified: true
-    active: false
+    active: true
 
   - key: meibo
     id: 委員名簿
@@ -78,7 +77,7 @@ documents:
     pages: 2
     fetched_at: 2026-09-14
     verified: true
-    active: false
+    active: true
 
   - key: zentai
     id: 全体版
@@ -89,7 +88,7 @@ documents:
     pages: 145
     fetched_at: 2026-09-14
     verified: true
-    active: false
+    active: true
     note: 議事次第から参考資料までを1本にまとめたもの。個別PDFがあるので通常は不要
 
 # ---------------------------------------------------------------------------

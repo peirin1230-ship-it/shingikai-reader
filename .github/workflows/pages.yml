@@ -45,8 +45,10 @@ jobs:
       - name: 原典PDFの取得とSHA256の検証
         run: python build/fetch.py --all
 
+      # OCR結果は work/ にコミット済みで、サイトも検証もOCRを使わない。
+      # CIで焼き直す意味はなく tesseract も要らないので --ocr off で走らせる
       - name: 画像とテキストへの分解
-        run: python build/extract.py --all
+        run: python build/extract.py --all --ocr off
 
       - name: 検証
         run: python build/validate.py --all

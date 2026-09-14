@@ -34,9 +34,15 @@
 | 横断KB（用語・年表・論点） | ○ | `kb/` |
 | スクリプト・ワークフロー | ○ | `build/` `.github/` |
 | PDFのURL・SHA256・取得日 | ○ | `councils/.../manifest.yaml` |
+| 抽出テキスト・OCR結果 | ○ | `work/`（`.txt` と `.json` のみ。約0.5MB） |
 | **原典PDF** | **×** | `source/`（gitignore） |
 | **スライド画像** | **×** | `images/`（gitignore）。GitHub Pages上にのみ存在する |
 | ビルド成果物 | × | `dist/`（gitignore） |
+
+抽出テキストを追跡しているのは、原典が訂正版に差し替えられたときに
+**どの数値が変わったかを差分で見られるようにする**ためである。
+再生成はできるが、履歴に残しておかないと過去の版との比較ができない。
+テキスト以外の中間ファイルは無視する。
 
 原典PDFとスライド画像をコミットしないのは、公開リポジトリでの第三者著作物の再配布を避けるため
 （SPEC §7.2）、およびGit履歴に入ったバイナリは削除しても残るためである。
@@ -50,13 +56,19 @@ Pagesへのデプロイはブランチにコミットせずアーティファク
 ## 使い方
 
 ```bash
-make setup     # 依存（poppler-utils, webp）の確認
+make setup     # 依存（poppler-utils, webp, tesseract）の確認
 make fetch     # manifest.yaml のURLからPDFを取得しSHA256を検証 → source/
-make extract   # PDF → images/ (WebP) + work/ (テキスト)
+make extract   # PDF → images/ (WebP) + work/ (テキスト・OCR)
 make validate  # フロントマター・数値・参照キー・URLの検証
 make build     # 解説Markdown + KB → dist/
 make serve     # dist/ をローカル配信（http://localhost:8000）
 ```
+
+`make extract` は、テキスト層から中身を読めないページだけをOCRにかける（`--ocr missing`、既定）。
+`--ocr all` で全ページ、`--ocr off` でOCRなし。
+**OCR結果は補助であって、原典のテキスト層の代わりにはならない。**
+数値の突合には使わず、`number_verified` にも影響しない（精度の実測は
+[`docs/pipeline-notes.md`](docs/pipeline-notes.md) §8）。
 
 個別に走らせる場合:
 
@@ -98,7 +110,21 @@ python3 build/inspect.py --council hoken --meeting 215 --page 77 --grid
 
 第215回の資料1「OTC類似薬の保険給付の見直しの実施について」と
 資料2「次期医療保険制度改革に向けて」は**すでに公開されている**（SPEC §10-5は公開待ちとしていた）。
-URLは `councils/hoken/215/manifest.yaml` に記録済みなので、`fetch.py` がそのまま取得できる。
+議事次第・委員名簿を含め、**全資料の取得・SHA256検証・テキスト抽出まで済ませてある**。
+残っているのは解説を書くことだけで、`councils/hoken/215/shiryo1/` `shiryo2/` を作れば始められる。
+
+| 資料 | ページ | 抽出テキスト |
+|---|---|---|
+| 参考資料 基礎資料 | 83 | `work/hoken/215/sanko/` |
+| 資料1 OTC類似薬の保険給付の見直しの実施について | 25 | `work/hoken/215/shiryo1/` |
+| 資料2 次期医療保険制度改革に向けて | 34 | `work/hoken/215/shiryo2/` |
+| 議事次第 | 1 | `work/hoken/215/shidai/` |
+| 委員名簿 | 2 | `work/hoken/215/meibo/` |
+| 全体版 | 145 | 上記5点の連結なのでコミットしない（§下記） |
+
+全体版PDFは他5資料をそのまま連結したもので、抽出テキストが**ページ単位でバイト一致する**
+ことを確認した（参考資料83/83ページ、資料1 25/25ページ）。
+重複するのでコミット対象から外してある（`.gitignore`）。抽出自体は行われる。
 
 **着手順**: ページ番号順には進めない。改革の経緯・患者負担の変遷・現行法・改革工程が
 集中している「これまでの医療保険制度改革」章を先に処理する。ここを固めないと
