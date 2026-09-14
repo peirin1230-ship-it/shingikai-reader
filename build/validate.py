@@ -42,9 +42,13 @@ SLIDE_TYPES = {"現状データ", "制度概要", "国際比較", "経緯整理"
                "論点提示", "対応案"}
 CONFIDENCE = {"high", "medium", "low"}
 REVIEW_STATUS = {"draft", "reviewed", "verified"}
+# 本文テンプレートの9節（SPEC §2.1）。中身のあるスライドに要求する
 SECTIONS = ["1. 一文要約", "2. 書いてあること", "3. このスライドの役割", "4. 背景",
             "5. 用語", "6. この事実が支える論点", "7. 数字の読み方の注意",
             "8. 関連スライド", "9. 出典"]
+# 章扉・表紙・目次は「章の狙いと収録スライドの一覧のみ」でよい（SPEC §2.1 の表）
+SECTIONS_LIGHT = ["1. 一文要約", "9. 出典"]
+LIGHT_TYPES = {"chapter", "cover", "toc"}
 SUMMARY_LIMIT = 40
 
 # 数値突合から除くもの。転記した数値ではないため
@@ -168,7 +172,8 @@ def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[
 
     # ---- 3. 節構成と一文要約 ----
     heads = re.findall(r"^##\s+(.+)$", body, re.M)
-    for name in SECTIONS:
+    required = SECTIONS_LIGHT if fm.get("slide_type") in LIGHT_TYPES else SECTIONS
+    for name in required:
         if not any(h.strip().startswith(name) for h in heads):
             rep.error(where, f"節がない: ## {name}")
     m = re.search(r"^##\s*1\.\s*一文要約\s*$(.*?)^##", body, re.M | re.S)
@@ -210,8 +215,15 @@ def check_slide(path: Path, meta_by_page: dict, topics: set[str], glossary: set[
             rep.warn(where, f"terms が kb/glossary にない（未作成）: {term}")
     for link in re.findall(r"\]\((?!https?:)([^)#]+)", body):
         target = (path.parent / link).resolve()
-        if not target.exists():
-            rep.error(where, f"リンク先がない: {link}")
+        if target.exists():
+            continue
+        # 同じ資料の別スライドへのリンクは、_meta.yaml に索引があれば有効とする。
+        # ビューアはスライドIDで解決するので、解説がまだ書かれていなくてもリンクは切れない
+        m = re.fullmatch(r"p(\d{3})\.md", link.strip())
+        if m and int(m.group(1)) in meta_by_page:
+            rep.warn(where, f"リンク先の解説が未作成（索引にはある）: {link}")
+            continue
+        rep.error(where, f"リンク先がない: {link}")
 
 
 def check_kb(rep: Report) -> tuple[set[str], set[str]]:
