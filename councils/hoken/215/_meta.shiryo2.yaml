@@ -76,16 +76,16 @@ slides:
       themes: [改革経緯], text_ok: true, number_verified: false }
 
   - { pdf_page: 15, printed_page: 14, type: 経緯整理, chapter: s2-seicho,
-      title: 日本成長戦略（抜粋①）デジタル・AI関連の官民投資ロードマップ,
+      title: 日本成長戦略（抜粋①）クラウドネイティブに最適化された医療DX基盤,
       themes: [医療DX], text_ok: true, number_verified: false }
   - { pdf_page: 16, printed_page: 15, type: 経緯整理, chapter: s2-seicho,
-      title: 日本成長戦略（抜粋②）合成生物学等の官民投資ロードマップ,
+      title: 日本成長戦略（抜粋②）合成生物学・バイオ（バイオ医薬品・再生医療等製品等）,
       themes: [創薬], text_ok: true, number_verified: false }
   - { pdf_page: 17, printed_page: 16, type: 経緯整理, chapter: s2-seicho,
-      title: 日本成長戦略（抜粋③）創薬・医療機器等の官民投資ロードマップ,
+      title: 日本成長戦略（抜粋③）創薬・先端医療（ファーストインクラス・ベストインクラス製品）,
       themes: [創薬, 薬剤費・薬価], text_ok: true, number_verified: false }
   - { pdf_page: 18, printed_page: 17, type: 経緯整理, chapter: s2-seicho,
-      title: 日本成長戦略（抜粋④）ライフロングヘルスケア等,
+      title: 日本成長戦略（抜粋④）ライフログデータ等を活用したヘルスケア関連サービス,
       themes: [予防・健康づくり], text_ok: true, number_verified: false }
   - { pdf_page: 19, printed_page: 18, type: 経緯整理, chapter: s2-seicho,
       title: 日本成長戦略（抜粋⑤）労働市場改革,
